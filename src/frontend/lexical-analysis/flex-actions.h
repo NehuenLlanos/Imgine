@@ -57,9 +57,13 @@ token BrightnessPatternAction(const char * lexeme);
 token SaturationPatternAction(const char * lexeme);
 token OpacityPatternAction(const char * lexeme);
 
+token XAxisPatternAction(const char * lexeme);
+token YAxisPatternAction(const char * lexeme);
+
 token VariableNamePatternAction(const char * lexeme);
 token StringPatternAction(const char * lexeme);
 token FloatPatternAction(const char * lexeme);
+token IntegerPatternAction(const char * lexeme);
 
 token CommentPatternAction(const char * lexeme);
 
@@ -113,9 +117,13 @@ typedef enum tokens {
     SATURATION,
     OPACITY,
 
+    X,
+    Y,
+
     VAR_NAME,
     STRING,
     FLOAT,
+    INTEGER,
 
     COMMENT
 }

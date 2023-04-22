@@ -6,14 +6,6 @@
 
 // Tipos de dato utilizados en las variables semánticas ($$, $1, $2, etc.).
 %union {
-	// No-terminales (backend).
-	/*
-	Program program;
-	Expression expression;
-	Factor factor;
-	Constant constant;
-	...
-	*/
 
 	// No-terminales (frontend).
 	int program;
@@ -23,19 +15,52 @@
 
 	// Terminales.
 	token token;
-	int integer;
+	float floatNum;
+	int integerNum;
 }
 
 // IDs y tipos de los tokens terminales generados desde Flex.
-%token <token> ADD
-%token <token> SUB
-%token <token> MUL
-%token <token> DIV
-
+%token <token> IMAGE
+%token <token> FILTER
+%token <token> SET
+%token <token> FOR
+%token <token> IN
+%token <token> DOT
+%token <token> EQUAL
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
+%token <token> QUOTE
+%token <token> COMMA
+%token <token> SEMI_COLON
+%token <token> OPEN_CURLY_BRACE
+%token <token> CLOSE_CURLY_BRACE
+%token <token> APPLY
+%token <token> OVERLAP
+%token <token> RESIZE
+%token <token> TRIM
+%token <token> UNION
+%token <token> SAVE
+%token <token> PARAMETER
+%token <token> WIDTH
+%token <token> HEIGHT
+%token <token> POSITION
+%token <token> AXIS
+%token <token> FORMAT
+%token <token> EXPOSURE
+%token <token> LUMINOSITY
+%token <token> SHADOWS
+%token <token> CONTRAST
+%token <token> BRIGHTNESS
+%token <token> SATURATION
+%token <token> OPACITY
+%token <token> X
+%token <token> Y
+%token <token> VAR_NAME
+%token <token> STRING
+%token <token> COMMENT
 
-%token <integer> INTEGER
+%token <floatNum> FLOAT
+%token <integerNum> INTEGER
 
 // Tipos de dato para los no-terminales generados desde Bison.
 %type <program> program

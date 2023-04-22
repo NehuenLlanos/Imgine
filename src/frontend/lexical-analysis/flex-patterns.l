@@ -14,7 +14,7 @@
 %option yylineno
 
 /* Patrones reutilizables. */
-digit			[0-9]
+position	    [1-9]
 whitespace		[ \f\n\r\t\v]
 float           [0-9]+\.[0-9]+
 variableName    [a-zA-Z][a-zA-Z0-9]*
@@ -26,8 +26,8 @@ str             .+
 "filter"									{ return FilterPatternAction(yytext); }
 "set"										{ return SetPatternAction(yytext); }
 
-"for"									    { return ForPatternAction(yytext, yyleng); }
-"in"									    { return InPatternAction(yytext, yyleng); }
+"for"									    { return ForPatternAction(yytext); }
+"in"									    { return InPatternAction(yytext); }
 
 "."                                         { return DotPatternAction(yytext); }
 "="											{ return EqualPatternAction(yytext); }
@@ -47,27 +47,31 @@ str             .+
 "save"										{ return SavePatternAction(yytext); }
 "parameter"									{ return ParameterPatternAction(yytext); }
 
-"width"                                     { return WidthPatternAction(yytext, yyleng); }
-"height"                                    { return HeightPatternAction(yytext, yyleng); }
-"position"                                  { return PositionPatternAction(yytext, yyleng); }
-"axis"                                      { return AxisPatternAction(yytext, yyleng); }
-"format"                                    { return FormatPatternAction(yytext, yyleng); }
-"exposure"                                  { return ExposurePatternAction(yytext, yyleng); }
-"luminosity"                                { return LuminosityPatternAction(yytext, yyleng); }
-"shadows"                                   { return ShadowsPatternAction(yytext, yyleng); }
-"contrast"                                  { return ContrastPatternAction(yytext, yyleng); }
-"brightness"                                { return BrightnessPatternAction(yytext, yyleng); }
-"saturation"                                { return SaturationPatternAction(yytext, yyleng); }
-"opacity"                                   { return OpacityPatternAction(yytext, yyleng); }
+"width"                                     { return WidthPatternAction(yytext); }
+"height"                                    { return HeightPatternAction(yytext); }
+"position"                                  { return PositionPatternAction(yytext); }
+"axis"                                      { return AxisPatternAction(yytext); }
+"format"                                    { return FormatPatternAction(yytext); }
+"exposure"                                  { return ExposurePatternAction(yytext); }
+"luminosity"                                { return LuminosityPatternAction(yytext); }
+"shadows"                                   { return ShadowsPatternAction(yytext); }
+"contrast"                                  { return ContrastPatternAction(yytext); }
+"brightness"                                { return BrightnessPatternAction(yytext); }
+"saturation"                                { return SaturationPatternAction(yytext); }
+"opacity"                                   { return OpacityPatternAction(yytext); }
 
-{variableName}+								{ return VariableNamePatternAction(yytext, yyleng); }
-{str}									    { return StringPatternAction(yytext, yyleng); }
-{float}                                     { return FloatPatternAction(yytext, yyleng); }
+"x"                                         { return XAxisPatternAction(yytext); }
+"y"                                         { return YAxisPatternAction(yytext); }
 
-{whitespace}								{ IgnoredPatternAction(yytext, yyleng); }
+{variableName}+								{ return VariableNamePatternAction(yytext); }
+{str}									    { return StringPatternAction(yytext); }
+{float}                                     { return FloatPatternAction(yytext); }
+{position}                                  { return IntegerPatternAction(yytext); }
 
-\/\/.*                                      { return CommentPatternAction(yytext, yyleng); }
+{whitespace}								{ IgnoredPatternAction(yytext); }
 
-.											{ return UnknownPatternAction(yytext, yyleng); }
+\/\/.*                                      { return CommentPatternAction(yytext); }
+
+.											{ return UnknownPatternAction(yytext); }
 
 %%

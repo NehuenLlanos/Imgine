@@ -216,6 +216,18 @@ token OpacityPatternAction(const char * lexeme) {
 	return OPACITY;
 }
 
+token XAxisPatternAction(const char * lexeme) {
+	LogDebug("XAxisPatternAction: '%s'.", lexeme);
+	yylval.token = X;
+	return X;
+}
+
+token YAxisPatternAction(const char * lexeme) {
+	LogDebug("YAxisPatternAction: '%s'.", lexeme);
+	yylval.token = Y;
+	return Y;
+}
+
 token VariableNamePatternAction(const char * lexeme) {
 	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
 	yylval.token = VAR_NAME;
@@ -230,9 +242,14 @@ token StringPatternAction(const char * lexeme) {
 
 token FloatPatternAction(const char * lexeme) {
 	LogDebug("FloatPatternAction: '%s'.", lexeme);
-	yylval.token = FLOAT;
-	yylval.value = atof(lexeme);
+	yylval.floatNum = atof(lexeme);
 	return FLOAT;
+}
+
+token IntegerPatternAction(const char * lexeme) {
+	LogDebug("IntegerPatternAction: '%s'.", lexeme);
+	yylval.integerNum = atoi(lexeme);
+	return INTEGER;
 }
 
 token CommentPatternAction(const char * lexeme) {
