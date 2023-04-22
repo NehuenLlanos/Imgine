@@ -18,42 +18,46 @@
  * (mediante $1, $2, $3, etc.).
  */
 
-void BeginCommentPatternAction() {
-	LogDebug("BeginCommentPatternAction.");
+token ImagePatternAction(const char * lexeme) {
+	LogDebug("ImagePatternAction: '%s'.", lexeme);
+	yylval.token = IMAGE;
+	return IMAGE;
 }
 
-void EndCommentPatternAction() {
-	LogDebug("EndCommentPatternAction.");
+token FilterPatternAction(const char * lexeme) {
+	LogDebug("FilterPatternAction: '%s'.", lexeme);
+	yylval.token = FILTER;
+	return FILTER;
 }
 
-token AdditionOperatorPatternAction(const char * lexeme) {
-	LogDebug("AdditionOperatorPatternAction: '%s'.", lexeme);
-	yylval.token = ADD;
-	return ADD;
+token SetPatternAction(const char * lexeme) {
+	LogDebug("SetPatternAction: '%s'.", lexeme);
+	yylval.token = SET;
+	return SET;
 }
 
-token CloseParenthesisPatternAction(const char * lexeme) {
-	LogDebug("CloseParenthesisPatternAction: '%s'.", lexeme);
-	yylval.token = CLOSE_PARENTHESIS;
-	return CLOSE_PARENTHESIS;
+token ForPatternAction(const char * lexeme) {
+	LogDebug("ForPatternAction: '%s'.", lexeme);
+	yylval.token = FOR;
+	return FOR;
 }
 
-token DivisionOperatorPatternAction(const char * lexeme) {
-	LogDebug("DivisionOperatorPatternAction: '%s'.", lexeme);
-	yylval.token = DIV;
-	return DIV;
+token InPatternAction(const char * lexeme) {
+	LogDebug("InPatternAction: '%s'.", lexeme);
+	yylval.token = IN;
+	return IN;
 }
 
-token IntegerPatternAction(const char * lexeme, const int length) {
-	LogDebug("IntegerPatternAction: '%s' (length = %d).", lexeme, length);
-	yylval.integer = atoi(lexeme);
-	return INTEGER;
+token DotPatternAction(const char * lexeme) {
+	LogDebug("DotPatternAction: '%s'.", lexeme);
+	yylval.token = DOT;
+	return DOT;
 }
 
-token MultiplicationOperatorPatternAction(const char * lexeme) {
-	LogDebug("MultiplicationOperatorPatternAction: '%s'.", lexeme);
-	yylval.token = MUL;
-	return MUL;
+token EqualPatternAction(const char * lexeme) {
+	LogDebug("EqualPatternAction: '%s'.", lexeme);
+	yylval.token = EQUAL;
+	return EQUAL;
 }
 
 token OpenParenthesisPatternAction(const char * lexeme) {
@@ -62,20 +66,187 @@ token OpenParenthesisPatternAction(const char * lexeme) {
 	return OPEN_PARENTHESIS;
 }
 
-token SubtractionOperatorPatternAction(const char * lexeme) {
-	LogDebug("SubtractionOperatorPatternAction: '%s'.", lexeme);
-	yylval.token = SUB;
-	return SUB;
+token CloseParenthesisPatternAction(const char * lexeme) {
+	LogDebug("CloseParenthesisPatternAction: '%s'.", lexeme);
+	yylval.token = CLOSE_PARENTHESIS;
+	return CLOSE_PARENTHESIS;
 }
 
-token UnknownPatternAction(const char * lexeme, const int length) {
-	LogDebug("UnknownPatternAction: '%s' (length = %d).", lexeme, length);
+token QuotePatternAction(const char * lexeme) {
+	LogDebug("QuotePatternAction: '%s'.", lexeme);
+	yylval.token = QUOTE;
+	return QUOTE;
+}
+
+token CommaPatternAction(const char * lexeme) {
+	LogDebug("CommaPatternAction: '%s'.", lexeme);
+	yylval.token = COMMA;
+	return COMMA;
+}
+
+token SemiColonPatternAction(const char * lexeme) {
+	LogDebug("SemiColonPatternAction: '%s'.", lexeme);
+	yylval.token = SEMI_COLON;
+	return SEMI_COLON;
+}
+
+token OpenCurlyBracePatternAction(const char * lexeme) {
+	LogDebug("OpenCurlyBracePatternAction: '%s'.", lexeme);
+	yylval.token = OPEN_CURLY_BRACE;
+	return OPEN_CURLY_BRACE;
+}
+
+token CloseCurlyBracePatternAction(const char * lexeme) {
+	LogDebug("CloseCurlyBracePatternAction: '%s'.", lexeme);
+	yylval.token = CLOSE_CURLY_BRACE;
+	return CLOSE_CURLY_BRACE;
+}
+
+token ApplyPatternAction(const char * lexeme) {
+	LogDebug("ApplyPatternAction: '%s'.", lexeme);
+	yylval.token = APPLY;
+	return APPLY;
+}
+
+token OverlapPatternAction(const char * lexeme) {
+	LogDebug("OverlapPatternAction: '%s'.", lexeme);
+	yylval.token = OVERLAP;
+	return OVERLAP;
+}
+
+token ResizePatternAction(const char * lexeme) {
+	LogDebug("ResizePatternAction: '%s'.", lexeme);
+	yylval.token = RESIZE;
+	return RESIZE;
+}
+
+token TrimPatternAction(const char * lexeme) {
+	LogDebug("TrimPatternAction: '%s'.", lexeme);
+	yylval.token = TRIM;
+	return TRIM;
+}
+
+token UnionPatternAction(const char * lexeme) {
+	LogDebug("UnionPatternAction: '%s'.", lexeme);
+	yylval.token = UNION;
+	return UNION;
+}
+
+token SavePatternAction(const char * lexeme) {
+	LogDebug("SavePatternAction: '%s'.", lexeme);
+	yylval.token = SAVE;
+	return SAVE;
+}
+
+token ParameterPatternAction(const char * lexeme) {
+	LogDebug("ParameterPatternAction: '%s'.", lexeme);
+	yylval.token = PARAMETER;
+	return PARAMETER;
+}
+
+token WidthPatternAction(const char * lexeme) {
+	LogDebug("WidthPatternAction: '%s'.", lexeme);
+	yylval.token = WIDTH;
+	return WIDTH;
+}
+
+token HeightPatternAction(const char * lexeme) {
+	LogDebug("HeightPatternAction: '%s'.", lexeme);
+	yylval.token = HEIGHT;
+	return HEIGHT;
+}
+
+token PositionPatternAction(const char * lexeme) {
+	LogDebug("PositionPatternAction: '%s'.", lexeme);
+	yylval.token = POSITION;
+	return POSITION;
+}
+
+token AxisPatternAction(const char * lexeme) {
+	LogDebug("AxisPatternAction: '%s'.", lexeme);
+	yylval.token = AXIS;
+	return AXIS;
+}
+
+token FormatPatternAction(const char * lexeme) {
+	LogDebug("FormatPatternAction: '%s'.", lexeme);
+	yylval.token = FORMAT;
+	return FORMAT;
+}
+
+token ExposurePatternAction(const char * lexeme) {
+	LogDebug("ExposurePatternAction: '%s'.", lexeme);
+	yylval.token = EXPOSURE;
+	return EXPOSURE;
+}
+
+token LuminosityPatternAction(const char * lexeme) {
+	LogDebug("LuminosityPatternAction: '%s'.", lexeme);
+	yylval.token = LUMINOSITY;
+	return LUMINOSITY;
+}
+
+token ShadowsPatternAction(const char * lexeme) {
+	LogDebug("ShadowsPatternAction: '%s'.", lexeme);
+	yylval.token = SHADOWS;
+	return SHADOWS;
+}
+
+token ContrastPatternAction(const char * lexeme) {
+	LogDebug("ContrastPatternAction: '%s'.", lexeme);
+	yylval.token = CONTRAST;
+	return CONTRAST;
+}
+
+token BrightnessPatternAction(const char * lexeme) {
+	LogDebug("BrightnessPatternAction: '%s'.", lexeme);
+	yylval.token = BRIGHTNESS;
+	return BRIGHTNESS;
+}
+
+token SaturationPatternAction(const char * lexeme) {
+	LogDebug("SaturationPatternAction: '%s'.", lexeme);
+	yylval.token = SATURATION;
+	return SATURATION;
+}
+
+token OpacityPatternAction(const char * lexeme) {
+	LogDebug("OpacityPatternAction: '%s'.", lexeme);
+	yylval.token = OPACITY;
+	return OPACITY;
+}
+
+token VariableNamePatternAction(const char * lexeme) {
+	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
+	yylval.token = VAR_NAME;
+	return VAR_NAME;
+}
+
+token StringPatternAction(const char * lexeme) {
+	LogDebug("StringPatternAction: '%s'.", lexeme);
+	yylval.token = STRING;
+	return STRING;
+}
+
+token FloatPatternAction(const char * lexeme) {
+	LogDebug("FloatPatternAction: '%s'.", lexeme);
+	yylval.token = FLOAT;
+	yylval.value = atof(lexeme);
+	return FLOAT;
+}
+
+token CommentPatternAction(const char * lexeme) {
+	LogDebug("CommentPatternAction: '%s'.", lexeme);
+	yylval.token = COMMENT;
+	return COMMENT;
+}
+
+token UnknownPatternAction(const char * lexeme) {
+	LogDebug("UnknownPatternAction: '%s'.", lexeme);
 	yylval.token = YYUNDEF;
-	// Al emitir este token, el compilador aborta la ejecución.
 	return YYUNDEF;
 }
 
-void IgnoredPatternAction(const char * lexeme, const int length) {
-	LogDebug("IgnoredPatternAction: '%s' (length = %d).", lexeme, length);
-	// Como no debe hacer nada con el patrón, solo se loguea en consola.
+void IgnoredPatternAction(const char * lexeme) {
+	LogDebug("IgnoredPatternAction: '%s'.", lexeme);
 }

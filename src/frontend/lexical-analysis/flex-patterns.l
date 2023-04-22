@@ -13,32 +13,60 @@
 /* Dispone una variable global "yylineno" con el número de línea actual. */
 %option yylineno
 
-/* Contextos de Flex. */
-%x COMMENT
-
 /* Patrones reutilizables. */
 digit			[0-9]
-endline			[\n]
 whitespace		[ \f\n\r\t\v]
+float           [0-9]+\.[0-9]+
+variableName    [a-zA-Z][a-zA-Z0-9]*
+str             .+
 
 %%
 
-"/*"										{ BEGIN(COMMENT); BeginCommentPatternAction(); }
-<COMMENT>.									{ ; }
-<COMMENT>{endline}							{ ; }
-<COMMENT>"*/"								{ EndCommentPatternAction(); BEGIN(INITIAL); }
+"image"										{ return ImagePatternAction(yytext); }
+"filter"									{ return FilterPatternAction(yytext); }
+"set"										{ return SetPatternAction(yytext); }
 
-"+"											{ return AdditionOperatorPatternAction(yytext); }
-"-"											{ return SubtractionOperatorPatternAction(yytext); }
-"*"											{ return MultiplicationOperatorPatternAction(yytext); }
-"/"											{ return DivisionOperatorPatternAction(yytext); }
+"for"									    { return ForPatternAction(yytext, yyleng); }
+"in"									    { return InPatternAction(yytext, yyleng); }
 
+"."                                         { return DotPatternAction(yytext); }
+"="											{ return EqualPatternAction(yytext); }
 "("											{ return OpenParenthesisPatternAction(yytext); }
 ")"											{ return CloseParenthesisPatternAction(yytext); }
+"\""										{ return QuotePatternAction(yytext); }
+","											{ return CommaPatternAction(yytext); }
+";"											{ return SemiColonPatternAction(yytext); }
+"{"											{ return OpenCurlyBracePatternAction(yytext); }
+"}"											{ return CloseCurlyBracePatternAction(yytext); }
 
-{digit}+									{ return IntegerPatternAction(yytext, yyleng); }
+"apply"										{ return ApplyPatternAction(yytext); }
+"overlap"									{ return OverlapPatternAction(yytext); }
+"resize"									{ return ResizePatternAction(yytext); }
+"trim"				    					{ return TrimPatternAction(yytext); }
+"union"										{ return UnionPatternAction(yytext); }
+"save"										{ return SavePatternAction(yytext); }
+"parameter"									{ return ParameterPatternAction(yytext); }
+
+"width"                                     { return WidthPatternAction(yytext, yyleng); }
+"height"                                    { return HeightPatternAction(yytext, yyleng); }
+"position"                                  { return PositionPatternAction(yytext, yyleng); }
+"axis"                                      { return AxisPatternAction(yytext, yyleng); }
+"format"                                    { return FormatPatternAction(yytext, yyleng); }
+"exposure"                                  { return ExposurePatternAction(yytext, yyleng); }
+"luminosity"                                { return LuminosityPatternAction(yytext, yyleng); }
+"shadows"                                   { return ShadowsPatternAction(yytext, yyleng); }
+"contrast"                                  { return ContrastPatternAction(yytext, yyleng); }
+"brightness"                                { return BrightnessPatternAction(yytext, yyleng); }
+"saturation"                                { return SaturationPatternAction(yytext, yyleng); }
+"opacity"                                   { return OpacityPatternAction(yytext, yyleng); }
+
+{variableName}+								{ return VariableNamePatternAction(yytext, yyleng); }
+{str}									    { return StringPatternAction(yytext, yyleng); }
+{float}                                     { return FloatPatternAction(yytext, yyleng); }
 
 {whitespace}								{ IgnoredPatternAction(yytext, yyleng); }
+
+\/\/.*                                      { return CommentPatternAction(yytext, yyleng); }
 
 .											{ return UnknownPatternAction(yytext, yyleng); }
 

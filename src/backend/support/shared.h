@@ -31,7 +31,6 @@ extern int yyparse(void);
 
 // Emular tipo "boolean".
 typedef enum {
-
 	false = 0,
 	true = 1
 } boolean;
