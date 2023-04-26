@@ -30,7 +30,6 @@ token DotPatternAction(const char * lexeme);
 token EqualPatternAction(const char * lexeme);
 token OpenParenthesisPatternAction(const char * lexeme);
 token CloseParenthesisPatternAction(const char * lexeme);
-token QuotePatternAction(const char * lexeme);
 token CommaPatternAction(const char * lexeme);
 token SemiColonPatternAction(const char * lexeme);
 token OpenCurlyBracePatternAction(const char * lexeme);
@@ -60,72 +59,15 @@ token OpacityPatternAction(const char * lexeme);
 token XAxisPatternAction(const char * lexeme);
 token YAxisPatternAction(const char * lexeme);
 
-token VariableNamePatternAction(const char * lexeme);
-token StringPatternAction(const char * lexeme);
+token VariableNamePatternAction(const char * lexeme, int length);
+token StringPatternAction(const char * lexeme, int length);
 token FloatPatternAction(const char * lexeme);
 token IntegerPatternAction(const char * lexeme);
 
-token CommentPatternAction(const char * lexeme);
+token CommentPatternAction(const char * lexeme, int length);
 
 token UnknownPatternAction(const char * lexeme);
 
 void IgnoredPatternAction(const char * lexeme);
-
-typedef enum tokens {
-    // Código de error de Bison, que permite abortar el escaneo de lexemas cuando
-	// se presente un patrón desconocido. El número "257" coincide con el valor
-	// que Bison le otorga por defecto, pero además permite que el resto de
-	// tokens continúen desde el valor "258" lo que permite proteger los IDs
-	// internos que Bison reserva para crear "tokens literales":
-	YYUNDEF = 257,
-
-    IMAGE,
-    FILTER,
-    SET,
-
-    FOR,
-    IN,
-
-    DOT,
-    EQUAL,
-    OPEN_PARENTHESIS,
-    CLOSE_PARENTHESIS,
-    QUOTE,
-    COMMA,
-    SEMI_COLON,
-    OPEN_CURLY_BRACE,
-    CLOSE_CURLY_BRACE,
-
-    APPLY,
-    OVERLAP,
-    RESIZE,
-    TRIM,
-    UNION,
-    SAVE,
-    PARAMETER,
-
-    WIDTH,
-    HEIGHT,
-    POSITION,
-    AXIS,
-    FORMAT,
-    EXPOSURE,
-    LUMINOSITY,
-    SHADOWS,
-    CONTRAST,
-    BRIGHTNESS,
-    SATURATION,
-    OPACITY,
-
-    X,
-    Y,
-
-    VAR_NAME,
-    STRING,
-    FLOAT,
-    INTEGER,
-
-    COMMENT
-}
 
 #endif

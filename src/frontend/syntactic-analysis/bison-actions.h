@@ -12,34 +12,34 @@
  */
 
 // Nuestras
-int ProgramGrammarAction(char *expression);
+int ProgramGrammarAction(int expression);
 
-int ExpressionImagedefSentenceGrammarAction(char *imagedef, char *sentence);
-int FilterdefExpressionGrammarAction(char *filterdef, char *expression);
-int SetdefExpressionGrammarAction(char *setdef, char *expression);
-int FordefExpressionGrammarAction(char *fordef, char *expression);
-int CommentExpressionGrammarAction(char *expression);
+int ExpressionImagedefSentenceGrammarAction(int imagedef, int sentence);
+int FilterdefExpressionGrammarAction(int filterdef, int expression);
+int SetdefExpressionGrammarAction(int setdef, int expression);
+int FordefExpressionGrammarAction(int fordef, int expression);
+int CommentExpressionGrammarAction(int expression);
 
-int ImagedefSenteceGrammarAction(char *imagedef, char *sentence);
-int FilterdefSenteceGrammarAction(char *filterdef, char *sentence);
-int SetdefSentenceGrammarAction(char *setdef, char *sentence);
-int FordefSentenceGrammarAction(char *fordef, char *sentence);
-int FunctionsSentenceGrammarAction(char *functions, char *sentence);
-int CommentSentenceGrammarAction(char *sentence);
+int ImagedefSenteceGrammarAction(int imagedef, int sentence);
+int FilterdefSenteceGrammarAction(int filterdef, int sentence);
+int SetdefSentenceGrammarAction(int setdef, int sentence);
+int FordefSentenceGrammarAction(int fordef, int sentence);
+int FunctionsSentenceGrammarAction(int functions, int sentence);
+int CommentSentenceGrammarAction(int sentence);
 
 int ImagevarParenthesisGrammarAction(char *path);
 int ImagevarVarnameGrammarAction(char *varname);
 
-int ImagedefGrammarAction(char *varname, char *imagevar);
+int ImagedefGrammarAction(char *varname, int imagevar);
 
 int FiltervarParanthesisGrammarAction(char *filtername);
-int FiltervarRecursiveGrammarAction(char *parametersdef);
+int FiltervarRecursiveGrammarAction(int parametersdef);
 int FilterVarnameGrammarAction(char *varname);
 
-int FilterdefGrammarAction(char *varname, char *filtervar);
+int FilterdefGrammarAction(char *varname, int filtervar);
 
-int ParametersdefParenthesisGrammarAction(char *property, float value);
-int ParametersdefRecursiveGrammarAction(char *property, float value, char *parametersdef);
+int ParametersdefParenthesisGrammarAction(int property, float value);
+int ParametersdefRecursiveGrammarAction(int property, float value, int parametersdef);
 
 int ExposureGrammarAction();
 int LuminosityGrammarAction();
@@ -49,23 +49,23 @@ int BrightnessGrammarAction();
 int SaturationGrammarAction();
 int OpacityGrammarAction();
 
-int SetvarParenthesisGrammarAction(char *images);
+int SetvarParenthesisGrammarAction(int images);
 int SetvarVarnameGrammarAction(char *varname);
 
-int SetdefGrammarAction(char *varname, char *setvar);
+int SetdefGrammarAction(char *varname, int setvar);
 
-int ImagesGrammarAction(char *imagevar);
-int ImagesRecursiveGrammarAction(char *imagevar, char *images);
+int ImagesGrammarAction(int imagevar);
+int ImagesRecursiveGrammarAction(int imagevar, int images);
 
-int FordefGrammarAction(char *varname, char *setvar, char *block);
+int FordefGrammarAction(char *varname, int setvar, int block);
 
-int BlockGrammarAction(char *functions);
-int BlockRecursiveGrammarAction(char *functions, char *block);
+int BlockGrammarAction(int functions);
+int BlockRecursiveGrammarAction(int functions, int block);
 
-int ApplyFiltersGrammarAction(char *varname, char *filters);
-int OverlapImagesGrammarAction(char *varname, char *imagevar, int position);
+int ApplyFiltersGrammarAction(char *varname, int filters);
+int OverlapImagesGrammarAction(char *varname, int imagevar, int position);
 int ResizeImageGrammarAction(char *varname, float width, float height);
-int UnionImagesGrammarAction(char *varname, char *imagevar, char *axis);
+int UnionImagesGrammarAction(char *varname, int imagevar, int axis);
 int TrimImageGrammarAction(char *varname, float width, float height, int position);
 int SaveFormatGrammarAction(char *varname, char *format);
 int SaveGrammarAction(char *varname);
@@ -73,7 +73,7 @@ int SaveGrammarAction(char *varname);
 int AxisXGrammarAction();
 int AxisYGrammarAction();
 
-int FiltersGrammarAction(char *filtervar);
-int FiltersRecursiveGrammarAction(char *filtervar, char *filters);
+int FiltersGrammarAction(int filtervar);
+int FiltersRecursiveGrammarAction(int filtervar, int filters);
 
 #endif

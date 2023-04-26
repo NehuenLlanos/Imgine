@@ -24,9 +24,9 @@ void yyerror(const char *string)
 	LogErrorRaw("\n\n");
 }
 
-int ProgramGrammarAction(char *expression)
+int ProgramGrammarAction(int expression)
 {
-	LogDebug("\tProgramGrammarAction(%s)", expression);
+	LogDebug("\tProgramGrammarAction(%d)", expression);
 	/*
 	 * "state" es una variable global que almacena el estado del compilador,
 	 * cuyo campo "succeed" indica si la compilación fue o no exitosa, la cual
@@ -44,69 +44,69 @@ int ProgramGrammarAction(char *expression)
 	return true;
 }
 
-int ExpressionImagedefSentenceGrammarAction(char *imagedef, char *sentence)
+int ExpressionImagedefSentenceGrammarAction(int imagedef, int sentence)
 {
-	LogDebug("\tExpressionImagedefSentenceGrammarAction(%s, %s)", imagedef, sentence);
+	LogDebug("\tExpressionImagedefSentenceGrammarAction(%d, %d)", imagedef, sentence);
 	return true;
 }
 
-int FilterdefExpressionGrammarAction(char *filterdef, char *expression)
+int FilterdefExpressionGrammarAction(int filterdef, int expression)
 {
-	LogDebug("\tFilterdefExpressionGrammarAction(%s, %s)", filterdef, expression);
+	LogDebug("\tFilterdefExpressionGrammarAction(%d, %d)", filterdef, expression);
 	return true;
 }
 
-int SetdefExpressionGrammarAction(char *setdef, char *expression)
+int SetdefExpressionGrammarAction(int setdef, int expression)
 {
-	LogDebug("\tSetdefExpressionGrammarAction(%s, %s)", setdef, expression);
+	LogDebug("\tSetdefExpressionGrammarAction(%d, %d)", setdef, expression);
 	return true;
 }
 
-int FordefExpressionGrammarAction(char *fordef, char *expression)
+int FordefExpressionGrammarAction(int fordef, int expression)
 {
-	LogDebug("\tFordefExpressionGrammarAction(%s, %s)", fordef, expression);
+	LogDebug("\tFordefExpressionGrammarAction(%d, %d)", fordef, expression);
 	return true;
 }
 
-int CommentExpressionGrammarAction(char *expression)
+int CommentExpressionGrammarAction(int expression)
 {
-	LogDebug("\tCommentExpressionGrammarAction(%s)", expression);
+	LogDebug("\tCommentExpressionGrammarAction(%d)", expression);
 	return true;
 }
 
-int ImagedefSenteceGrammarAction(char *imagedef, char *sentence)
+int ImagedefSenteceGrammarAction(int imagedef, int sentence)
 {
-	LogDebug("\tImagedefSenteceGrammarAction(%s, %s)", imagedef, sentence);
+	LogDebug("\tImagedefSenteceGrammarAction(%d, %d)", imagedef, sentence);
 	return true;
 }
 
-int FilterdefSenteceGrammarAction(char *filterdef, char *sentence)
+int FilterdefSenteceGrammarAction(int filterdef, int sentence)
 {
-	LogDebug("\tFilterdefSenteceGrammarAction(%s, %s)", filterdef, sentence);
+	LogDebug("\tFilterdefSenteceGrammarAction(%d, %d)", filterdef, sentence);
 	return true;
 }
 
-int SetdefSentenceGrammarAction(char *setdef, char *sentence)
+int SetdefSentenceGrammarAction(int setdef, int sentence)
 {
-	LogDebug("\tSetdefSentenceGrammarAction(%s, %s)", setdef, sentence);
+	LogDebug("\tSetdefSentenceGrammarAction(%d, %d)", setdef, sentence);
 	return true;
 }
 
-int FordefSentenceGrammarAction(char *fordef, char *sentence)
+int FordefSentenceGrammarAction(int fordef, int sentence)
 {
-	LogDebug("\tFordefSentenceGrammarAction(%s, %s)", fordef, sentence);
+	LogDebug("\tFordefSentenceGrammarAction(%d, %d)", fordef, sentence);
 	return true;
 }
 
-int FunctionsSentenceGrammarAction(char *functions, char *sentence)
+int FunctionsSentenceGrammarAction(int functions, int sentence)
 {
-	LogDebug("\tFunctionsSentenceGrammarAction(%s, %s)", functions, sentence);
+	LogDebug("\tFunctionsSentenceGrammarAction(%d, %d)", functions, sentence);
 	return true;
 }
 
-int CommentSentenceGrammarAction(char *sentence)
+int CommentSentenceGrammarAction(int sentence)
 {
-	LogDebug("\tCommentSentenceGrammarAction(%s)", sentence);
+	LogDebug("\tCommentSentenceGrammarAction(%d)", sentence);
 	return true;
 }
 
@@ -122,21 +122,21 @@ int ImagevarVarnameGrammarAction(char *varname)
 	return true;
 }
 
-int ImagedefGrammarAction(char *varname, char *imagevar)
+int ImagedefGrammarAction(char *varname, int imagevar)
 {
-	LogDebug("\tImagedefGrammarAction(%s, %s)", varname, imagevar);
+	LogDebug("\tImagedefGrammarAction(%s, %d)", varname, imagevar);
 	return true;
 }
 
-int FiltervarParanthesisGrammarAction(char *filtername)
+int FiltervarParanthesisGrammarAction(char * filtername)
 {
 	LogDebug("\tFiltervarParanthesisGrammarAction(%s)", filtername);
 	return true;
 }
 
-int FiltervarRecursiveGrammarAction(char *parametersdef)
+int FiltervarRecursiveGrammarAction(int parametersdef)
 {
-	LogDebug("\tFiltervarRecursiveGrammarAction(%s)", parametersdef);
+	LogDebug("\tFiltervarRecursiveGrammarAction(%d)", parametersdef);
 	return true;
 }
 
@@ -146,21 +146,21 @@ int FilterVarnameGrammarAction(char *varname)
 	return true;
 }
 
-int FilterdefGrammarAction(char *varname, char *filtervar)
+int FilterdefGrammarAction(char *varname, int filtervar)
 {
-	LogDebug("\tFilterdefGrammarAction(%s, %s)", varname, filtervar);
+	LogDebug("\tFilterdefGrammarAction(%s, %d)", varname, filtervar);
 	return true;
 }
 
-int ParametersdefParenthesisGrammarAction(char *property, float value)
+int ParametersdefParenthesisGrammarAction(int property, float value)
 {
-	LogDebug("\tParametersdefParenthesisGrammarAction(%s, %.2f)", property, value);
+	LogDebug("\tParametersdefParenthesisGrammarAction(%d, %.2f)", property, value);
 	return true;
 }
 
-int ParametersdefRecursiveGrammarAction(char *property, float value, char *parametersdef)
+int ParametersdefRecursiveGrammarAction(int property, float value, int parametersdef)
 {
-	LogDebug("\tParametersdefRecursiveGrammarAction(%s, %.2f, %s)", property, value, parametersdef);
+	LogDebug("\tParametersdefRecursiveGrammarAction(%d, %.2f, %d)", property, value, parametersdef);
 	return true;
 }
 
@@ -206,63 +206,63 @@ int OpacityGrammarAction()
 	return true;
 }
 
-int SetvarParenthesisGrammarAction(char *images)
+int SetvarParenthesisGrammarAction(int images)
 {
-	LogDebug("\tSetvarParenthesisGrammarAction(%s)", images);
+	LogDebug("\tSetvarParenthesisGrammarAction(%d)", images);
 	return true;
 }
 
-int SetvarVarnameGrammarAction(char *varname)
+int SetvarVarnameGrammarAction(char * varname)
 {
 	LogDebug("\tSetvarVarnameGrammarAction(%s)", varname);
 	return true;
 }
 
-int SetdefGrammarAction(char *varname, char *setvar)
+int SetdefGrammarAction(char *varname, int setvar)
 {
-	LogDebug("\tSetdefGrammarAction(%s, %s)", varname, setvar);
+	LogDebug("\tSetdefGrammarAction(%s, %d)", varname, setvar);
 	return true;
 }
 
-int ImagesGrammarAction(char *imagevar)
+int ImagesGrammarAction(int imagevar)
 {
-	LogDebug("\tImagesGrammarAction(%s)", imagevar);
+	LogDebug("\tImagesGrammarAction(%d)", imagevar);
 	return true;
 }
 
-int ImagesRecursiveGrammarAction(char *imagevar, char *images)
+int ImagesRecursiveGrammarAction(int imagevar, int images)
 {
-	LogDebug("\tImagesRecursiveGrammarAction(%s, %s)", imagevar, images);
+	LogDebug("\tImagesRecursiveGrammarAction(%d, %d)", imagevar, images);
 	return true;
 }
 
-int FordefGrammarAction(char *varname, char *setvar, char *block)
+int FordefGrammarAction(char *varname, int setvar, int block)
 {
-	LogDebug("\tFordefGrammarAction(%s, %s, %s)", varname, setvar, block);
+	LogDebug("\tFordefGrammarAction(%s, %d, %d)", varname, setvar, block);
 	return true;
 }
 
-int BlockGrammarAction(char *functions)
+int BlockGrammarAction(int functions)
 {
-	LogDebug("\tBlockGrammarAction(%s)", functions);
+	LogDebug("\tBlockGrammarAction(%d)", functions);
 	return true;
 }
 
-int BlockRecursiveGrammarAction(char *functions, char *block)
+int BlockRecursiveGrammarAction(int functions, int block)
 {
-	LogDebug("\tBlockRecursiveGrammarAction(%s, %s)", functions, block);
+	LogDebug("\tBlockRecursiveGrammarAction(%d, %d)", functions, block);
 	return true;
 }
 
-int ApplyFiltersGrammarAction(char *varname, char *filters)
+int ApplyFiltersGrammarAction(char *varname, int filters)
 {
-	LogDebug("\tApplyFiltersGrammarAction(%s, %s)", value, filters);
+	LogDebug("\tApplyFiltersGrammarAction(%s, %d)", varname, filters);
 	return true;
 }
 
-int OverlapImagesGrammarAction(char *varname, char *imagevar, int position)
+int OverlapImagesGrammarAction(char *varname, int imagevar, int position)
 {
-	LogDebug("\tOverlapImagesGrammarAction(%s, %s, %d)", varname, imagevar, position);
+	LogDebug("\tOverlapImagesGrammarAction(%s, %d, %d)", varname, imagevar, position);
 	return true;
 }
 
@@ -272,9 +272,9 @@ int ResizeImageGrammarAction(char *varname, float width, float height)
 	return true;
 }
 
-int UnionImagesGrammarAction(char *varname, char *imagevar, char *axis)
+int UnionImagesGrammarAction(char *varname, int imagevar, int axis)
 {
-	LogDebug("\tUnionImagesGrammarAction(%s, %s, %s)", varname, imagevar, axis);
+	LogDebug("\tUnionImagesGrammarAction(%s, %d, %d)", varname, imagevar, axis);
 	return true;
 }
 
@@ -308,14 +308,14 @@ int AxisYGrammarAction()
 	return true;
 }
 
-int FiltersGrammarAction(char *filtervar)
+int FiltersGrammarAction(int filtervar)
 {
-	LogDebug("\tFiltersGrammarAction(%s)", filtervar);
+	LogDebug("\tFiltersGrammarAction(%d)", filtervar);
 	return true;
 }
 
-int FiltersRecursiveGrammarAction(char *filtervar, char *filters)
+int FiltersRecursiveGrammarAction(int filtervar, int filters)
 {
-	LogDebug("\tFiltersRecursiveGrammarAction(%s)", filtervar, filters);
+	LogDebug("\tFiltersRecursiveGrammarAction(%d, %d)", filtervar, filters);
 	return true;
 }

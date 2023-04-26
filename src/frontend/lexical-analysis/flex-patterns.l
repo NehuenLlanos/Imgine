@@ -17,7 +17,7 @@
 position	    [1-9]
 whitespace		[ \f\n\r\t\v]
 float           [0-9]+\.[0-9]+
-variableName    [a-zA-Z][a-zA-Z0-9]*
+variableName    [a-zA-Z][a-zA-Z0-9_]*
 str             .+
 
 %%
@@ -33,7 +33,6 @@ str             .+
 "="											{ return EqualPatternAction(yytext); }
 "("											{ return OpenParenthesisPatternAction(yytext); }
 ")"											{ return CloseParenthesisPatternAction(yytext); }
-"\""										{ return QuotePatternAction(yytext); }
 ","											{ return CommaPatternAction(yytext); }
 ";"											{ return SemiColonPatternAction(yytext); }
 "{"											{ return OpenCurlyBracePatternAction(yytext); }
@@ -63,14 +62,14 @@ str             .+
 "x"                                         { return XAxisPatternAction(yytext); }
 "y"                                         { return YAxisPatternAction(yytext); }
 
-{variableName}+								{ return VariableNamePatternAction(yytext); }
-{str}									    { return StringPatternAction(yytext); }
+{variableName}+								{ return VariableNamePatternAction(yytext, yyleng); }
+\"{str}\"								    { return StringPatternAction(yytext, yyleng); }
 {float}                                     { return FloatPatternAction(yytext); }
 {position}                                  { return IntegerPatternAction(yytext); }
 
 {whitespace}								{ IgnoredPatternAction(yytext); }
 
-\/\/.*                                      { return CommentPatternAction(yytext); }
+\/\/.*                                      { return CommentPatternAction(yytext, yyleng); }
 
 .											{ return UnknownPatternAction(yytext); }
 

@@ -536,3 +536,5 @@ cache/
 log/
 obj/
 node_modules/
+
+.viminfo

@@ -8,28 +8,29 @@
 %union {
 
 	// No-terminales (frontend).
-	char * program;
-	char * expression;
-	char * sentence;
-	char * imagevar;
-	char * imagedef;
-	char * filtervar;
-	char * filterdef;
-	char * parametersdef;
-	char * property;
-	char * setvar;
-	char * setdef;
-	char * images;
-	char * fordef;
-	char * block;
-	char * functions;
-	char * axises;
-	char * filters;
+	int program;
+	int expression;
+	int sentence;
+	int imagevar;
+	int imagedef;
+	int filtervar;
+	int filterdef;
+	int parametersdef;
+	int property;
+	int setvar;
+	int setdef;
+	int images;
+	int fordef;
+	int block;
+	int functions;
+	int axises;
+	int filters;
 
 	// Terminales.
 	token token;
 	float floatNum;
 	int integerNum;
+	char * string;
 }
 
 // IDs y tipos de los tokens terminales generados desde Flex.
@@ -42,7 +43,6 @@
 %token <token> EQUAL
 %token <token> OPEN_PARENTHESIS
 %token <token> CLOSE_PARENTHESIS
-%token <token> QUOTE
 %token <token> COMMA
 %token <token> SEMI_COLON
 %token <token> OPEN_CURLY_BRACE
@@ -68,9 +68,10 @@
 %token <token> OPACITY
 %token <token> X
 %token <token> Y
-%token <token> VAR_NAME
-%token <token> STRING
-%token <token> COMMENT
+
+%token <string> VAR_NAME
+%token <string> STRING
+%token <string> COMMENT
 
 %token <floatNum> FLOAT
 %token <integerNum> INTEGER
@@ -93,6 +94,7 @@
 %type <functions> functions;
 %type <axises> axises;
 %type <filters> filters;
+
 // Reglas de asociatividad y precedencia (de menor a mayor).
 
 
@@ -109,8 +111,7 @@ expression: imagedef sentence   																{ $$ = ExpressionImagedefSentenc
 	| setdef expression																			{ $$ = SetdefExpressionGrammarAction($1, $2); }
 	| fordef expression																			{ $$ = FordefExpressionGrammarAction($1, $2); }
 	| COMMENT expression 																		{ $$ = CommentExpressionGrammarAction($2); }
-	| COMMENT 																					{ $$ = NULL }
-	| /* lambda */																				{ $$ = NULL }
+	| /* lambda */																				{ $$ = true; }
 	;					
 
 sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction($1, $2); }
@@ -119,18 +120,17 @@ sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction
 	| fordef sentence																			{ $$ = FordefSentenceGrammarAction($1, $2); } 
 	| functions sentence																		{ $$ = FunctionsSentenceGrammarAction($1, $2); } 
 	| COMMENT sentence 																			{ $$ = CommentSentenceGrammarAction($2); } 
-	| COMMENT 																					{ $$ = NULL }
-	| /* lambda */																				{ $$ = NULL }
+	| /* lambda */																				{ $$ = true; }
 	;					
 
-imagevar: IMAGE OPEN_PARENTHESIS QUOTE STRING QUOTE CLOSE_PARENTHESIS 							{ $$ = ImagevarParenthesisGrammarAction($4); }
+imagevar: IMAGE OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS 										{ $$ = ImagevarParenthesisGrammarAction($3); }
 	| VAR_NAME 																					{ $$ = ImagevarVarnameGrammarAction($1); }
 	; 
 
 imagedef: IMAGE VAR_NAME EQUAL imagevar SEMI_COLON 												{ $$ = ImagedefGrammarAction($2, $4); }
 	;
 
-filtervar: FILTER OPEN_PARENTHESIS QUOTE STRING QUOTE CLOSE_PARENTHESIS 						{ $$ = FiltervarParanthesisGrammarAction($4); }
+filtervar: FILTER OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS 									{ $$ = FiltervarParanthesisGrammarAction($3); }
 	| FILTER  OPEN_PARENTHESIS CLOSE_PARENTHESIS parametersdef 									{ $$ = FiltervarRecursiveGrammarAction($4); }
 	| VAR_NAME 																					{ $$ = FilterVarnameGrammarAction($1); }
 	;
@@ -174,7 +174,7 @@ functions: VAR_NAME DOT APPLY OPEN_PARENTHESIS filters CLOSE_PARENTHESIS SEMI_CO
 	| VAR_NAME DOT RESIZE OPEN_PARENTHESIS WIDTH EQUAL FLOAT COMMA HEIGHT EQUAL FLOAT CLOSE_PARENTHESIS SEMI_COLON 									{ $$ = ResizeImageGrammarAction($1, $7, $11); }
 	| VAR_NAME DOT UNION OPEN_PARENTHESIS imagevar COMMA AXIS EQUAL axises CLOSE_PARENTHESIS SEMI_COLON 											{ $$ = UnionImagesGrammarAction($1, $5, $9); }	
 	| VAR_NAME DOT TRIM OPEN_PARENTHESIS WIDTH EQUAL FLOAT COMMA HEIGHT EQUAL FLOAT COMMA POSITION EQUAL INTEGER CLOSE_PARENTHESIS SEMI_COLON 		{ $$ = TrimImageGrammarAction($1, $7, $11, $15); }
-	| VAR_NAME DOT SAVE OPEN_PARENTHESIS FORMAT EQUAL QUOTE STRING QUOTE CLOSE_PARENTHESIS SEMI_COLON 												{ $$ = SaveFormatGrammarAction($1, $8); }
+	| VAR_NAME DOT SAVE OPEN_PARENTHESIS FORMAT EQUAL STRING CLOSE_PARENTHESIS SEMI_COLON 															{ $$ = SaveFormatGrammarAction($1, $7); }
 	| VAR_NAME DOT SAVE OPEN_PARENTHESIS CLOSE_PARENTHESIS SEMI_COLON 																				{ $$ = SaveGrammarAction($1); }
 	;
 

@@ -1,6 +1,7 @@
 #include "../../backend/support/logger.h"
 #include "flex-actions.h"
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * Implementación de "flex-actions.h".
@@ -70,12 +71,6 @@ token CloseParenthesisPatternAction(const char * lexeme) {
 	LogDebug("CloseParenthesisPatternAction: '%s'.", lexeme);
 	yylval.token = CLOSE_PARENTHESIS;
 	return CLOSE_PARENTHESIS;
-}
-
-token QuotePatternAction(const char * lexeme) {
-	LogDebug("QuotePatternAction: '%s'.", lexeme);
-	yylval.token = QUOTE;
-	return QUOTE;
 }
 
 token CommaPatternAction(const char * lexeme) {
@@ -228,15 +223,19 @@ token YAxisPatternAction(const char * lexeme) {
 	return Y;
 }
 
-token VariableNamePatternAction(const char * lexeme) {
+token VariableNamePatternAction(const char * lexeme, int length) {
 	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
-	yylval.token = VAR_NAME;
+	char * str = malloc(length+1);
+	strncpy(str, lexeme, length);
+	yylval.string = str;
 	return VAR_NAME;
 }
 
-token StringPatternAction(const char * lexeme) {
+token StringPatternAction(const char * lexeme, int length) {
 	LogDebug("StringPatternAction: '%s'.", lexeme);
-	yylval.token = STRING;
+	char * str = malloc(length+1);
+	strncpy(str, lexeme, length);
+	yylval.string = str;
 	return STRING;
 }
 
@@ -252,9 +251,11 @@ token IntegerPatternAction(const char * lexeme) {
 	return INTEGER;
 }
 
-token CommentPatternAction(const char * lexeme) {
+token CommentPatternAction(const char * lexeme, int length) {
 	LogDebug("CommentPatternAction: '%s'.", lexeme);
-	yylval.token = COMMENT;
+	char * str = malloc(length+1);
+	strncpy(str, lexeme, length);
+	yylval.string = str;
 	return COMMENT;
 }
 
