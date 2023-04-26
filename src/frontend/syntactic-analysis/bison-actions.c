@@ -9,80 +9,313 @@
  */
 
 /**
-* Esta función se ejecuta cada vez que se emite un error de sintaxis.
-*/
-void yyerror(const char * string) {
+ * Esta función se ejecuta cada vez que se emite un error de sintaxis.
+ */
+void yyerror(const char *string)
+{
 	LogError("Mensaje: '%s' debido a '%s' (linea %d).", string, yytext, yylineno);
 	LogError("En ASCII es:");
 	LogErrorRaw("\t");
 	const int length = strlen(yytext);
-	for (int i = 0; i < length; ++i) {
+	for (int i = 0; i < length; ++i)
+	{
 		LogErrorRaw("[%d]", yytext[i]);
 	}
 	LogErrorRaw("\n\n");
 }
 
-/**
-* Esta acción se corresponde con el no-terminal que representa el símbolo
-* inicial de la gramática, y por ende, es el último en ser ejecutado, lo que
-* indica que efectivamente el programa de entrada se pudo generar con esta
-* gramática, o lo que es lo mismo, que el programa pertenece al lenguaje.
-*/
-int ProgramGrammarAction(const int value) {
-	LogDebug("\tProgramGrammarAction(%d)", value);
+int ProgramGrammarAction(char *expression)
+{
+	LogDebug("\tProgramGrammarAction(%s)", expression);
 	/*
-	* "state" es una variable global que almacena el estado del compilador,
-	* cuyo campo "succeed" indica si la compilación fue o no exitosa, la cual
-	* es utilizada en la función "main".
-	*/
+	 * "state" es una variable global que almacena el estado del compilador,
+	 * cuyo campo "succeed" indica si la compilación fue o no exitosa, la cual
+	 * es utilizada en la función "main".
+	 */
 	state.succeed = true;
 	/*
-	* Por otro lado, "result" contiene el resultado de aplicar el análisis
-	* sintáctico mediante Bison, y almacenar el nood raíz del AST construido
-	* en esta variable. Para el ejemplo de la calculadora, no hay AST porque
-	* la expresión se computa on-the-fly, y es la razón por la cual esta
-	* variable es un simple entero, en lugar de un nodo.
-	*/
-	state.result = value;
-	return value;
+	 * Por otro lado, "result" contiene el resultado de aplicar el análisis
+	 * sintáctico mediante Bison, y almacenar el nood raíz del AST construido
+	 * en esta variable. Para el ejemplo de la calculadora, no hay AST porque
+	 * la expresión se computa on-the-fly, y es la razón por la cual esta
+	 * variable es un simple entero, en lugar de un nodo.
+	 */
+	state.result = 1;
+	return true;
 }
 
-int AdditionExpressionGrammarAction(const int leftValue, const int rightValue) {
-	LogDebug("\tAdditionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Add(leftValue, rightValue);
+int ExpressionImagedefSentenceGrammarAction(char *imagedef, char *sentence)
+{
+	LogDebug("\tExpressionImagedefSentenceGrammarAction(%s, %s)", imagedef, sentence);
+	return true;
 }
 
-int SubtractionExpressionGrammarAction(const int leftValue, const int rightValue) {
-	LogDebug("\tSubtractionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Subtract(leftValue, rightValue);
+int FilterdefExpressionGrammarAction(char *filterdef, char *expression)
+{
+	LogDebug("\tFilterdefExpressionGrammarAction(%s, %s)", filterdef, expression);
+	return true;
 }
 
-int MultiplicationExpressionGrammarAction(const int leftValue, const int rightValue) {
-	LogDebug("\tMultiplicationExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Multiply(leftValue, rightValue);
+int SetdefExpressionGrammarAction(char *setdef, char *expression)
+{
+	LogDebug("\tSetdefExpressionGrammarAction(%s, %s)", setdef, expression);
+	return true;
 }
 
-int DivisionExpressionGrammarAction(const int leftValue, const int rightValue) {
-	LogDebug("\tDivisionExpressionGrammarAction(%d, %d)", leftValue, rightValue);
-	return Divide(leftValue, rightValue);
+int FordefExpressionGrammarAction(char *fordef, char *expression)
+{
+	LogDebug("\tFordefExpressionGrammarAction(%s, %s)", fordef, expression);
+	return true;
 }
 
-int FactorExpressionGrammarAction(const int value) {
-	LogDebug("\tFactorExpressionGrammarAction(%d)", value);
-	return value;
+int CommentExpressionGrammarAction(char *expression)
+{
+	LogDebug("\tCommentExpressionGrammarAction(%s)", expression);
+	return true;
 }
 
-int ExpressionFactorGrammarAction(const int value) {
-	LogDebug("\tExpressionFactorGrammarAction(%d)", value);
-	return value;
+int ImagedefSenteceGrammarAction(char *imagedef, char *sentence)
+{
+	LogDebug("\tImagedefSenteceGrammarAction(%s, %s)", imagedef, sentence);
+	return true;
 }
 
-int ConstantFactorGrammarAction(const int value) {
-	LogDebug("\tConstantFactorGrammarAction(%d)", value);
-	return value;
+int FilterdefSenteceGrammarAction(char *filterdef, char *sentence)
+{
+	LogDebug("\tFilterdefSenteceGrammarAction(%s, %s)", filterdef, sentence);
+	return true;
 }
 
-int IntegerConstantGrammarAction(const int value) {
-	LogDebug("\tIntegerConstantGrammarAction(%d)", value);
-	return value;
+int SetdefSentenceGrammarAction(char *setdef, char *sentence)
+{
+	LogDebug("\tSetdefSentenceGrammarAction(%s, %s)", setdef, sentence);
+	return true;
+}
+
+int FordefSentenceGrammarAction(char *fordef, char *sentence)
+{
+	LogDebug("\tFordefSentenceGrammarAction(%s, %s)", fordef, sentence);
+	return true;
+}
+
+int FunctionsSentenceGrammarAction(char *functions, char *sentence)
+{
+	LogDebug("\tFunctionsSentenceGrammarAction(%s, %s)", functions, sentence);
+	return true;
+}
+
+int CommentSentenceGrammarAction(char *sentence)
+{
+	LogDebug("\tCommentSentenceGrammarAction(%s)", sentence);
+	return true;
+}
+
+int ImagevarParenthesisGrammarAction(char *path)
+{
+	LogDebug("\tImagevarParenthesisGrammarAction(%s)", path);
+	return true;
+}
+
+int ImagevarVarnameGrammarAction(char *varname)
+{
+	LogDebug("\tmagevarVarnameGrammarAction(%s)", varname);
+	return true;
+}
+
+int ImagedefGrammarAction(char *varname, char *imagevar)
+{
+	LogDebug("\tImagedefGrammarAction(%s, %s)", varname, imagevar);
+	return true;
+}
+
+int FiltervarParanthesisGrammarAction(char *filtername)
+{
+	LogDebug("\tFiltervarParanthesisGrammarAction(%s)", filtername);
+	return true;
+}
+
+int FiltervarRecursiveGrammarAction(char *parametersdef)
+{
+	LogDebug("\tFiltervarRecursiveGrammarAction(%s)", parametersdef);
+	return true;
+}
+
+int FilterVarnameGrammarAction(char *varname)
+{
+	LogDebug("\tFilterVarnameGrammarAction(%s)", varname);
+	return true;
+}
+
+int FilterdefGrammarAction(char *varname, char *filtervar)
+{
+	LogDebug("\tFilterdefGrammarAction(%s, %s)", varname, filtervar);
+	return true;
+}
+
+int ParametersdefParenthesisGrammarAction(char *property, float value)
+{
+	LogDebug("\tParametersdefParenthesisGrammarAction(%s, %.2f)", property, value);
+	return true;
+}
+
+int ParametersdefRecursiveGrammarAction(char *property, float value, char *parametersdef)
+{
+	LogDebug("\tParametersdefRecursiveGrammarAction(%s, %.2f, %s)", property, value, parametersdef);
+	return true;
+}
+
+int ExposureGrammarAction()
+{
+	LogDebug("\tExposureGrammarAction");
+	return true;
+}
+
+int LuminosityGrammarAction()
+{
+	LogDebug("\tLuminosityGrammarAction");
+	return true;
+}
+
+int ShadowsGrammarAction()
+{
+	LogDebug("\tShadowsGrammarAction");
+	return true;
+}
+
+int ContrastGrammarAction()
+{
+	LogDebug("\tContrastGrammarAction");
+	return true;
+}
+
+int BrightnessGrammarAction()
+{
+	LogDebug("\tBrightnessGrammarAction");
+	return true;
+}
+
+int SaturationGrammarAction()
+{
+	LogDebug("\tSaturationGrammarAction");
+	return true;
+}
+
+int OpacityGrammarAction()
+{
+	LogDebug("\tOpacityGrammarAction");
+	return true;
+}
+
+int SetvarParenthesisGrammarAction(char *images)
+{
+	LogDebug("\tSetvarParenthesisGrammarAction(%s)", images);
+	return true;
+}
+
+int SetvarVarnameGrammarAction(char *varname)
+{
+	LogDebug("\tSetvarVarnameGrammarAction(%s)", varname);
+	return true;
+}
+
+int SetdefGrammarAction(char *varname, char *setvar)
+{
+	LogDebug("\tSetdefGrammarAction(%s, %s)", varname, setvar);
+	return true;
+}
+
+int ImagesGrammarAction(char *imagevar)
+{
+	LogDebug("\tImagesGrammarAction(%s)", imagevar);
+	return true;
+}
+
+int ImagesRecursiveGrammarAction(char *imagevar, char *images)
+{
+	LogDebug("\tImagesRecursiveGrammarAction(%s, %s)", imagevar, images);
+	return true;
+}
+
+int FordefGrammarAction(char *varname, char *setvar, char *block)
+{
+	LogDebug("\tFordefGrammarAction(%s, %s, %s)", varname, setvar, block);
+	return true;
+}
+
+int BlockGrammarAction(char *functions)
+{
+	LogDebug("\tBlockGrammarAction(%s)", functions);
+	return true;
+}
+
+int BlockRecursiveGrammarAction(char *functions, char *block)
+{
+	LogDebug("\tBlockRecursiveGrammarAction(%s, %s)", functions, block);
+	return true;
+}
+
+int ApplyFiltersGrammarAction(char *varname, char *filters)
+{
+	LogDebug("\tApplyFiltersGrammarAction(%s, %s)", value, filters);
+	return true;
+}
+
+int OverlapImagesGrammarAction(char *varname, char *imagevar, int position)
+{
+	LogDebug("\tOverlapImagesGrammarAction(%s, %s, %d)", varname, imagevar, position);
+	return true;
+}
+
+int ResizeImageGrammarAction(char *varname, float width, float height)
+{
+	LogDebug("\tResizeImageGrammarAction(%s, %.2f, %.2f)", varname, width, height);
+	return true;
+}
+
+int UnionImagesGrammarAction(char *varname, char *imagevar, char *axis)
+{
+	LogDebug("\tUnionImagesGrammarAction(%s, %s, %s)", varname, imagevar, axis);
+	return true;
+}
+
+int TrimImageGrammarAction(char *varname, float width, float height, int position)
+{
+	LogDebug("\tTrimImageGrammarAction(%s, %.2f, %.2f, %d)", varname, width, height, position);
+	return true;
+}
+
+int SaveFormatGrammarAction(char *varname, char *format)
+{
+	LogDebug("\tSaveFormatGrammarAction(%s, %s)", varname, format);
+	return true;
+}
+
+int SaveGrammarAction(char *varname)
+{
+	LogDebug("\tSaveGrammarAction(%s)", varname);
+	return true;
+}
+
+int AxisXGrammarAction()
+{
+	LogDebug("\tAxisXGrammarAction");
+	return true;
+}
+
+int AxisYGrammarAction()
+{
+	LogDebug("\tAxisYGrammarAction");
+	return true;
+}
+
+int FiltersGrammarAction(char *filtervar)
+{
+	LogDebug("\tFiltersGrammarAction(%s)", filtervar);
+	return true;
+}
+
+int FiltersRecursiveGrammarAction(char *filtervar, char *filters)
+{
+	LogDebug("\tFiltersRecursiveGrammarAction(%s)", filtervar, filters);
+	return true;
 }
