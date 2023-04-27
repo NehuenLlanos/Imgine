@@ -1,0 +1,11 @@
+// Wrong quotes
+
+image watermark = image('path/to/watermark.png');
+image image_1 = image('path/to/image_1.jpg');
+image image_2 = image('path/to/image_2.tiff');
+image image_3 = image('path/to/image_3');
+
+for im in set(image_1, image_2, image_3) {
+    im.overlap(watermark.apply(filter().parameter(opacity=0.5)));
+    im.save();
+}

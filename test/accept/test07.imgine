@@ -1,0 +1,10 @@
+image im = image("path");
+image im2 = image("path");
+image im3 = image("path");
+image im4 = image("path");
+image im5 = image("path");
+set s = set(im, im2, im3, im4, im5);
+
+for variable in s {
+    variable.save();
+}

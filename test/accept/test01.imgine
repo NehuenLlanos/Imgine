@@ -1,10 +1,14 @@
 // Declaración de la variable my_image
 image my_image = image("path/to/image.png");
+
 // Definimos el filtro a utilizar
 filter grayscale = filter("grayscale");
+
 // Aplicamos el filtro
 my_image.apply(grayscale);
+
 // Redimensión de la imagen
-my_image.resize(width=350, height=520);
+my_image.resize(width=350.0, height=520.0);
+
 // Guardamos la imagen
-my_image.save()
+my_image.save();
