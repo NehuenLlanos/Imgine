@@ -1,0 +1,7 @@
+image my_image = image("path/to/image.png");
+filter custom_filter = filter()
+                        .parameter(opacity=0.25)
+                        .parameter(brightness=1.10)
+                        .parameter(contrast=0.77);
+my_image.apply(filter("invert"), custom_filter);
+my_image.save();

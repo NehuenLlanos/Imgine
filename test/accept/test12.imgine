@@ -1,0 +1,13 @@
+// This program should not work in the future
+
+image watermark = image("path/to/watermark.png");
+image image_ = image("path/to/image_1.jpg");
+image image_ = image("path/to/image_2.tiff");
+image image_ = image("path/to/image_3");
+
+watermark.apply(filter().parameter(opacity=0.5));
+
+for im in set(image_, image_, image_) {
+    im.overlap(watermark, position=9);
+    im.save();
+}

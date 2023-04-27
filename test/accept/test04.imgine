@@ -1,0 +1,6 @@
+image my_image = image("hello.jpeg");
+
+my_image.apply(filter().parameter(opacity=0.10).parameter(saturation=2.24));
+my_image.resize(width=25.0, height=12.0);
+
+my_image.save(format="tiff");

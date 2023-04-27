@@ -1,0 +1,23 @@
+image im = image("path");
+
+im.apply(
+    filter()
+        .parameter(exposure=0.6)
+        .parameter(luminosity=0.6)
+        .parameter(shadows=0.6)
+        .parameter(contrast=0.6)
+        .parameter(brightness=0.6)
+        .parameter(saturation=0.6)
+        .parameter(opacity=0.6)
+);
+
+
+
+
+
+
+
+
+
+
+im.save(format="formato formatoso");
