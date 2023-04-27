@@ -68,10 +68,10 @@
 %token <token> OPACITY
 %token <token> X
 %token <token> Y
+%token <token> COMMENT
 
 %token <string> VAR_NAME
 %token <string> STRING
-%token <string> COMMENT
 
 %token <floatNum> FLOAT
 %token <integerNum> INTEGER
