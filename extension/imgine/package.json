@@ -1,0 +1,35 @@
+{
+  "name": "imgine",
+  "publisher": "alejofl",
+  "displayName": "Imgine",
+  "description": "Syntax highliting for Imgine files",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.77.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "imgine",
+      "aliases": ["Imgine", "imgine"],
+      "extensions": [".imgine"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "imgine",
+      "scopeName": "source.imgine",
+      "path": "./syntaxes/imgine.tmLanguage.json"
+    }]
+  },
+  "icon": "images/imgine-logo.png",
+  "galleryBanner": {
+    "color": "#161616",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NehuenLlanos/imgine.git"
+  }
+}
