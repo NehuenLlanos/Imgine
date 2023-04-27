@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/48220676/234736990-d0f68e88-f800-4df6-b18e-52cc5a969052.jpg" width="100%">
+
 # Imgine - Image Engine
 
 Un compilador construido con Flex y Bison, en el marco de la materia Autómatas, Teoría de Lenguajes y Compiladores del Instituto Tecnológico de Buenos Aires.
