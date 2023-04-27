@@ -69,7 +69,7 @@ str             .+
 
 {whitespace}								{ IgnoredPatternAction(yytext); }
 
-\/\/.*                                      { return CommentPatternAction(yytext, yyleng); }
+\/\/.*                                      { return CommentPatternAction(yytext); }
 
 .											{ return UnknownPatternAction(yytext); }
 

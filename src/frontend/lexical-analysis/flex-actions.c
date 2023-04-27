@@ -251,11 +251,9 @@ token IntegerPatternAction(const char * lexeme) {
 	return INTEGER;
 }
 
-token CommentPatternAction(const char * lexeme, int length) {
+token CommentPatternAction(const char * lexeme) {
 	LogDebug("CommentPatternAction: '%s'.", lexeme);
-	char * str = malloc(length+1);
-	strncpy(str, lexeme, length);
-	yylval.string = str;
+	yylval.token = COMMENT;
 	return COMMENT;
 }
 
