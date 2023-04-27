@@ -111,7 +111,7 @@ expression: imagedef sentence   																{ $$ = ExpressionImagedefSentenc
 	| setdef expression																			{ $$ = SetdefExpressionGrammarAction($1, $2); }
 	| fordef expression																			{ $$ = FordefExpressionGrammarAction($1, $2); }
 	| COMMENT expression 																		{ $$ = CommentExpressionGrammarAction($2); }
-	| /* lambda */																				{ $$ = true; }
+	| %empty																					{ $$ = true; }
 	;					
 
 sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction($1, $2); }
@@ -120,7 +120,7 @@ sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction
 	| fordef sentence																			{ $$ = FordefSentenceGrammarAction($1, $2); } 
 	| functions sentence																		{ $$ = FunctionsSentenceGrammarAction($1, $2); } 
 	| COMMENT sentence 																			{ $$ = CommentSentenceGrammarAction($2); } 
-	| /* lambda */																				{ $$ = true; }
+	| %empty																					{ $$ = true; }
 	;					
 
 imagevar: IMAGE OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS 										{ $$ = ImagevarParenthesisGrammarAction($3); }
