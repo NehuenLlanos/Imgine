@@ -15,12 +15,12 @@ En el panel de la izquierda de VS Code, seleccionar *Extensiones* y buscar `Imgi
 En una terminal con directorio raíz en esta carpeta, ejecutar:
 
 ```
-code --install-extension imgine-1.0.0.vsix
+code --install-extension imgine-1.1.0.vsix
 ```
 
 ### Opción 3: Localmente (2)
 
-Mover el archivo `imgine-1.0.0.vsix` al directorio que corresponda con su sistema operativo.
+Mover el archivo `imgine-1.1.0.vsix` al directorio que corresponda con su sistema operativo.
 
 * Windows `%USERPROFILE%\.vscode\extensions`
 * macOS `~/.vscode/extensions`

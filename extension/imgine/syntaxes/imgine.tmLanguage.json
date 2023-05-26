@@ -52,11 +52,11 @@
 		"constants": {
 			"patterns": [{
 				"name": "constant.language",
-				"match": "\\b(x|y)\\b"
+				"match": "\\b(x|y|top-left|top-center|top-right|center-left|center-center|center-right|bottom-left|bottom-center|bottom-right)\\b"
 			},
 			{
 				"name": "constant.numeric",
-				"match": "(?<![^0-9 =])(([0-9]+\\.[0-9]+)|([1-9]))"
+				"match": "(?<![^0-9 =])(([0-9]+\\.[0-9]+))"
 			}]
 		}
 	},
