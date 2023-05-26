@@ -33,14 +33,6 @@ int ProgramGrammarAction(int expression)
 	 * es utilizada en la función "main".
 	 */
 	state.succeed = true;
-	/*
-	 * Por otro lado, "result" contiene el resultado de aplicar el análisis
-	 * sintáctico mediante Bison, y almacenar el nood raíz del AST construido
-	 * en esta variable. Para el ejemplo de la calculadora, no hay AST porque
-	 * la expresión se computa on-the-fly, y es la razón por la cual esta
-	 * variable es un simple entero, en lugar de un nodo.
-	 */
-	state.result = 1;
 	return true;
 }
 
