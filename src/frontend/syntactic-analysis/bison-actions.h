@@ -11,76 +11,78 @@
  * abstracta (i.e., el AST).
  */
 
-int ProgramGrammarAction(int expression);
+Program ProgramGrammarAction(Expression expression);
 
-int ExpressionImagedefSentenceGrammarAction(int imagedef, int sentence);
-int FilterdefExpressionGrammarAction(int filterdef, int expression);
-int SetdefExpressionGrammarAction(int setdef, int expression);
-int FordefExpressionGrammarAction(int fordef, int expression);
+Expression ExpressionImagedefSentenceGrammarAction(Imagedef imagedef, Sentence sentence);
+Expression FilterdefExpressionGrammarAction(Filterdef filterdef, Expression expression);
+Expression SetdefExpressionGrammarAction(Setdef setdef, Expression expression);
+Expression FordefExpressionGrammarAction(Fordef fordef, Expression expression);
+Expression LambdaExpressionGrammarAction();
 
-int ImagedefSenteceGrammarAction(int imagedef, int sentence);
-int FilterdefSenteceGrammarAction(int filterdef, int sentence);
-int SetdefSentenceGrammarAction(int setdef, int sentence);
-int FordefSentenceGrammarAction(int fordef, int sentence);
-int FunctionsSentenceGrammarAction(int functions, int sentence);
+Sentence ImagedefSenteceGrammarAction(Imagedef imagedef, Sentence sentence);
+Sentence FilterdefSenteceGrammarAction(Filterdef filterdef, Sentence sentence);
+Sentence SetdefSentenceGrammarAction(Setdef setdef, Sentence sentence);
+Sentence FordefSentenceGrammarAction(Fordef fordef, Sentence sentence);
+Sentence FunctionsSentenceGrammarAction(Functions functions, Sentence sentence);
+Sentence LambdaSentenceGrammarAction();
 
-int ImagevarParenthesisGrammarAction(char *path);
-int ImagevarVarnameGrammarAction(char *varname);
+Imagevar ImagevarParenthesisGrammarAction(char * path);
+Imagevar ImagevarVarnameGrammarAction(char * varname);
 
-int ImagedefGrammarAction(char *varname, int imagevar);
+Imagedef ImagedefGrammarAction(char * varname, Imagevar imagevar);
 
-int FiltervarParanthesisGrammarAction(char *filtername);
-int FiltervarRecursiveGrammarAction(int parametersdef);
-int FilterVarnameGrammarAction(char *varname);
+Filtervar FiltervarParanthesisGrammarAction(char * filtername);
+Filtervar FiltervarRecursiveGrammarAction(Parametersdef parametersdef);
+Filtervar FilterVarnameGrammarAction(char * varname);
 
-int FilterdefGrammarAction(char *varname, int filtervar);
+Filterdef FilterdefGrammarAction(char * varname, Filtervar filtervar);
 
-int ParametersdefParenthesisGrammarAction(int property, float value);
-int ParametersdefRecursiveGrammarAction(int property, float value, int parametersdef);
+Parametersdef ParametersdefParenthesisGrammarAction(Properties property, float value);
+Parametersdef ParametersdefRecursiveGrammarAction(Properties property, float value, Parametersdef parametersdef);
 
-int ExposureGrammarAction();
-int LuminosityGrammarAction();
-int ShadowsGrammarAction();
-int ContrastGrammarAction();
-int BrightnessGrammarAction();
-int SaturationGrammarAction();
-int OpacityGrammarAction();
+Properties ExposureGrammarAction();
+Properties LuminosityGrammarAction();
+Properties ShadowsGrammarAction();
+Properties ContrastGrammarAction();
+Properties BrightnessGrammarAction();
+Properties SaturationGrammarAction();
+Properties OpacityGrammarAction();
 
-int SetvarParenthesisGrammarAction(int images);
-int SetvarVarnameGrammarAction(char *varname);
+Setvar SetvarParenthesisGrammarAction(Images images);
+Setvar SetvarVarnameGrammarAction(char * varname);
 
-int SetdefGrammarAction(char *varname, int setvar);
+Setdef SetdefGrammarAction(char * varname, Setvar setvar);
 
-int ImagesGrammarAction(int imagevar);
-int ImagesRecursiveGrammarAction(int imagevar, int images);
+Images ImagesGrammarAction(Imagevar imagevar);
+Images ImagesRecursiveGrammarAction(Imagevar imagevar, Images images);
 
-int FordefGrammarAction(char *varname, int setvar, int block);
+Fordef FordefGrammarAction(char * varname, Setvar setvar, Block block);
 
-int BlockGrammarAction(int functions);
-int BlockRecursiveGrammarAction(int functions, int block);
+Block BlockGrammarAction(Functions functions);
+Block BlockRecursiveGrammarAction(Functions functions, Block block);
 
-int ApplyFiltersGrammarAction(char *varname, int filters);
-int OverlapImagesGrammarAction(char *varname, int imagevar, int position);
-int ResizeImageGrammarAction(char *varname, float width, float height);
-int UnionImagesGrammarAction(char *varname, int imagevar, int axis);
-int TrimImageGrammarAction(char *varname, float width, float height, int position);
-int SaveFormatGrammarAction(char *varname, char *format);
-int SaveGrammarAction(char *varname);
+Functions ApplyFiltersGrammarAction(char * varname, Filters filters);
+Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Positions position);
+Functions ResizeImageGrammarAction(char * varname, float width, float height);
+Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axis);
+Functions TrimImageGrammarAction(char * varname, float width, float height, Positions position);
+Functions SaveFormatGrammarAction(char * varname, char * format);
+Functions SaveGrammarAction(char * varname);
 
-int AxisXGrammarAction();
-int AxisYGrammarAction();
+Axises AxisXGrammarAction();
+Axises AxisYGrammarAction();
 
-int FiltersGrammarAction(int filtervar);
-int FiltersRecursiveGrammarAction(int filtervar, int filters);
+Filters FiltersGrammarAction(Filtervar filtervar);
+Filters FiltersRecursiveGrammarAction(Filtervar filtervar, Filters filters);
 
-int PositionTopLeftGrammarAction();
-int PositionTopCenterGrammarAction();
-int PositionTopRightGrammarAction();
-int PositionCenterLeftGrammarAction();
-int PositionCenterCenterGrammarAction();
-int PositionCenterRightGrammarAction();
-int PositionBottomLeftGrammarAction();
-int PositionBottomCenterGrammarAction();
-int PositionBottomRightGrammarAction();
+Positions PositionTopLeftGrammarAction();
+Positions PositionTopCenterGrammarAction();
+Positions PositionTopRightGrammarAction();
+Positions PositionCenterLeftGrammarAction();
+Positions PositionCenterCenterGrammarAction();
+Positions PositionCenterRightGrammarAction();
+Positions PositionBottomLeftGrammarAction();
+Positions PositionBottomCenterGrammarAction();
+Positions PositionBottomRightGrammarAction();
 
 #endif

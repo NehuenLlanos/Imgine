@@ -117,7 +117,7 @@ expression: imagedef sentence   																{ $$ = ExpressionImagedefSentenc
 	| filterdef expression																		{ $$ = FilterdefExpressionGrammarAction($1, $2); }
 	| setdef expression																			{ $$ = SetdefExpressionGrammarAction($1, $2); }
 	| fordef expression																			{ $$ = FordefExpressionGrammarAction($1, $2); }
-	| %empty																					{ $$ = true; }
+	| %empty																					{ $$ = LambdaExpressionGrammarAction(); }
 	;					
 
 sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction($1, $2); }
@@ -125,7 +125,7 @@ sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction
 	| setdef sentence 																			{ $$ = SetdefSentenceGrammarAction($1, $2); } 
 	| fordef sentence																			{ $$ = FordefSentenceGrammarAction($1, $2); } 
 	| functions sentence																		{ $$ = FunctionsSentenceGrammarAction($1, $2); } 
-	| %empty																					{ $$ = true; }
+	| %empty																					{ $$ = LambdaSentenceGrammarAction(); }
 	;					
 
 imagevar: IMAGE OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS 										{ $$ = ImagevarParenthesisGrammarAction($3); }
@@ -164,7 +164,7 @@ setdef: SET VAR_NAME EQUAL setvar SEMI_COLON 													{ $$ = SetdefGrammarAc
 	;
 
 images: imagevar 																				{ $$ = ImagesGrammarAction($1); }
-	| imagevar COMMA images 																	{ $$ = ImagesRecursiveGrammarAction($1, $2); }
+	| imagevar COMMA images 																	{ $$ = ImagesRecursiveGrammarAction($1, $3); }
 	;	
 
 fordef: FOR VAR_NAME IN setvar OPEN_CURLY_BRACE block CLOSE_CURLY_BRACE 						{ $$ = FordefGrammarAction($2, $4, $6); }

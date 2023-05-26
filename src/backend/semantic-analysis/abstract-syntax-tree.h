@@ -25,10 +25,11 @@ struct ProgramNode {
 };
 
 typedef enum {
-	IMAGEDEF,
-	FILTERDEF,
-	SETDEF,
-	FORDEF
+	EXPRESSIONTYPE_IMAGEDEF,
+	EXPRESSIONTYPE_FILTERDEF,
+	EXPRESSIONTYPE_SETDEF,
+	EXPRESSIONTYPE_FORDEF,
+	EXPRESSIONTYPE_LAMBDA
 } ExpressionNodeType;
 
 struct ExpressionNode {
@@ -42,11 +43,12 @@ struct ExpressionNode {
 };
 
 typedef enum {
-	IMAGEDEF,
-	FILTERDEF,
-	SETDEF,
-	FORDEF,
-	FUNCTIONS
+	SENTENCETYPE_IMAGEDEF,
+	SENTENCETYPE_FILTERDEF,
+	SENTENCETYPE_SETDEF,
+	SENTENCETYPE_FORDEF,
+	SENTENCETYPE_FUNCTIONS,
+	SENTENCETYPE_LAMBDA
 } SentenceNodeType;
 
 struct SentenceNode {
@@ -60,8 +62,8 @@ struct SentenceNode {
 };
 
 typedef enum {
-	VAR_NAME,
-	PATH
+	IMAGEVARTYPE_VAR_NAME,
+	IMAGEVARTYPE_PATH
 } ImagevarNodeType;
 
 struct ImagevarNode {
@@ -76,9 +78,9 @@ struct ImagedefNode {
 };
 
 typedef enum {
-	PARAMETERSDEF,
-	FILTER_NAME,
-	VAR_NAME
+	FILTERVARTYPE_PARAMETERSDEF,
+	FILTERVARTYPE_FILTER_NAME,
+	FILTERVARTYPE_VAR_NAME
 } FiltervarNodeType;
 
 struct FiltervarNode {
@@ -90,12 +92,12 @@ struct FiltervarNode {
 
 struct FilterdefNode {
 	char * var_name;
-	Filtervar imagevar;
+	Filtervar filtervar;
 };
 
 typedef enum {
-	PARAMETER,
-	LAST,
+	PARAMETERSDEFTYPE_PARAMETER,
+	PARAMETERSDEFTYPE_LAST,
 } ParametersdefNodeType;
 
 struct ParametersdefNode {
@@ -106,13 +108,13 @@ struct ParametersdefNode {
 };
 
 typedef enum {
-	EXPOSURE,
-	LUMINOSITY,
-	SHADOWS,
-	CONTRAST,
-	BRIGHTNESS,
-	SATURATION,
-	OPACITY
+	PROPERTY_EXPOSURE,
+	PROPERTY_LUMINOSITY,
+	PROPERTY_SHADOWS,
+	PROPERTY_CONTRAST,
+	PROPERTY_BRIGHTNESS,
+	PROPERTY_SATURATION,
+	PROPERTY_OPACITY
 } Property;
 
 struct PropertiesNode {
@@ -120,8 +122,8 @@ struct PropertiesNode {
 };
 
 typedef enum {
-	VAR_NAME,
-	SET
+	SETVARTYPE_VAR_NAME,
+	SETVARTYPE_SET
 } SetvarNodeType;
 
 struct SetvarNode {
@@ -136,12 +138,12 @@ struct SetdefNode {
 };
 
 typedef enum {
-	SINGLE,
-	MULTIPLE
+	IMAGESTYPE_SINGLE,
+	IMAGESTYPE_MULTIPLE
 } ImagesNodeType;
 
 struct ImagesNode {
-	ImagesNodeType typr;
+	ImagesNodeType type;
 	Imagevar imagevar;
 	Images images;
 };
@@ -153,24 +155,24 @@ struct FordefNode {
 };
 
 typedef enum {
-	SINGLE,
-	MULTIPLE
+	BLOCKTYPE_SINGLE,
+	BLOCKTYPE_MULTIPLE
 } BlockNodeType;
 
 struct BlockNode {
-	BlockNodeType typr;
+	BlockNodeType type;
 	Functions functions;
 	Block block;
 };
 
 typedef enum {
-	APPLY_FILTERS,
-	OVERLAP,
-	RESIZE,
-	UNION,
-	TRIM,
-	SAVE_WITH_FORMAT,
-	SAVE
+	FUNCTIONSTYPE_APPLY_FILTERS,
+	FUNCTIONSTYPE_OVERLAP,
+	FUNCTIONSTYPE_RESIZE,
+	FUNCTIONSTYPE_UNION,
+	FUNCTIONSTYPE_TRIM,
+	FUNCTIONSTYPE_SAVE_WITH_FORMAT,
+	FUNCTIONSTYPE_SAVE
 } FunctionsNodeType;
 
 struct FunctionsNode {
@@ -186,8 +188,8 @@ struct FunctionsNode {
 };
 
 typedef enum {
-	X,
-	Y
+	AXIS_X,
+	AXIS_Y
 } Axis;
 
 struct AxisesNode {
@@ -195,8 +197,8 @@ struct AxisesNode {
 };
 
 typedef enum {
-	SINGLE,
-	MULTIPLE
+	FILTERSTYPE_SINGLE,
+	FILTERSTYPE_MULTIPLE
 } FiltersNodeType;
 
 struct FiltersNode {
@@ -206,15 +208,15 @@ struct FiltersNode {
 };
 
 typedef enum {
-	TOP_LEFT,
-	TOP_CENTER,
-	TOP_RIGHT,
-	CENTER_LEFT,
-	CENTER_CENTER,
-	CENTER_RIGHT,
-	BOTTOM_LEFT,
-	BOTTOM_CENTER,
-	BOTTOM_RIGHT
+	POSITION_TOP_LEFT,
+	POSITION_TOP_CENTER,
+	POSITION_TOP_RIGHT,
+	POSITION_CENTER_LEFT,
+	POSITION_CENTER_CENTER,
+	POSITION_CENTER_RIGHT,
+	POSITION_BOTTOM_LEFT,
+	POSITION_BOTTOM_CENTER,
+	POSITION_BOTTOM_RIGHT
 } Position;
 
 struct PositionsNode {
