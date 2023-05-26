@@ -68,12 +68,6 @@ int FordefExpressionGrammarAction(int fordef, int expression)
 	return true;
 }
 
-int CommentExpressionGrammarAction(int expression)
-{
-	LogDebug("\tCommentExpressionGrammarAction(%d)", expression);
-	return true;
-}
-
 int ImagedefSenteceGrammarAction(int imagedef, int sentence)
 {
 	LogDebug("\tImagedefSenteceGrammarAction(%d, %d)", imagedef, sentence);
@@ -101,12 +95,6 @@ int FordefSentenceGrammarAction(int fordef, int sentence)
 int FunctionsSentenceGrammarAction(int functions, int sentence)
 {
 	LogDebug("\tFunctionsSentenceGrammarAction(%d, %d)", functions, sentence);
-	return true;
-}
-
-int CommentSentenceGrammarAction(int sentence)
-{
-	LogDebug("\tCommentSentenceGrammarAction(%d)", sentence);
 	return true;
 }
 

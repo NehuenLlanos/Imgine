@@ -251,10 +251,8 @@ token IntegerPatternAction(const char * lexeme) {
 	return INTEGER;
 }
 
-token CommentPatternAction(const char * lexeme) {
+void CommentPatternAction(const char * lexeme) {
 	LogDebug("CommentPatternAction: '%s'.", lexeme);
-	yylval.token = COMMENT;
-	return COMMENT;
 }
 
 token UnknownPatternAction(const char * lexeme) {

@@ -68,7 +68,6 @@
 %token <token> OPACITY
 %token <token> X
 %token <token> Y
-%token <token> COMMENT
 
 %token <string> VAR_NAME
 %token <string> STRING
@@ -110,7 +109,6 @@ expression: imagedef sentence   																{ $$ = ExpressionImagedefSentenc
 	| filterdef expression																		{ $$ = FilterdefExpressionGrammarAction($1, $2); }
 	| setdef expression																			{ $$ = SetdefExpressionGrammarAction($1, $2); }
 	| fordef expression																			{ $$ = FordefExpressionGrammarAction($1, $2); }
-	| COMMENT expression 																		{ $$ = CommentExpressionGrammarAction($2); }
 	| %empty																					{ $$ = true; }
 	;					
 
@@ -119,7 +117,6 @@ sentence: imagedef sentence 																	{ $$ = ImagedefSenteceGrammarAction
 	| setdef sentence 																			{ $$ = SetdefSentenceGrammarAction($1, $2); } 
 	| fordef sentence																			{ $$ = FordefSentenceGrammarAction($1, $2); } 
 	| functions sentence																		{ $$ = FunctionsSentenceGrammarAction($1, $2); } 
-	| COMMENT sentence 																			{ $$ = CommentSentenceGrammarAction($2); } 
 	| %empty																					{ $$ = true; }
 	;					
 

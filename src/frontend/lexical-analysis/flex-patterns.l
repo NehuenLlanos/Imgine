@@ -74,7 +74,7 @@ variableName    [a-zA-Z][a-zA-Z0-9_]*
 
 {whitespace}								{ IgnoredPatternAction(yytext); }
 
-\/\/.*                                      { return CommentPatternAction(yytext); }
+\/\/.*                                      { CommentPatternAction(yytext); }
 
 .											{ return UnknownPatternAction(yytext); }
 

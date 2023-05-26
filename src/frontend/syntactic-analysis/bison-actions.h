@@ -11,21 +11,18 @@
  * abstracta (i.e., el AST).
  */
 
-// Nuestras
 int ProgramGrammarAction(int expression);
 
 int ExpressionImagedefSentenceGrammarAction(int imagedef, int sentence);
 int FilterdefExpressionGrammarAction(int filterdef, int expression);
 int SetdefExpressionGrammarAction(int setdef, int expression);
 int FordefExpressionGrammarAction(int fordef, int expression);
-int CommentExpressionGrammarAction(int expression);
 
 int ImagedefSenteceGrammarAction(int imagedef, int sentence);
 int FilterdefSenteceGrammarAction(int filterdef, int sentence);
 int SetdefSentenceGrammarAction(int setdef, int sentence);
 int FordefSentenceGrammarAction(int fordef, int sentence);
 int FunctionsSentenceGrammarAction(int functions, int sentence);
-int CommentSentenceGrammarAction(int sentence);
 
 int ImagevarParenthesisGrammarAction(char *path);
 int ImagevarVarnameGrammarAction(char *varname);

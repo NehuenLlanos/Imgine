@@ -64,7 +64,7 @@ token StringPatternAction(const char * lexeme, int length);
 token FloatPatternAction(const char * lexeme);
 token IntegerPatternAction(const char * lexeme);
 
-token CommentPatternAction(const char * lexeme);
+void CommentPatternAction(const char * lexeme);
 
 token UnknownPatternAction(const char * lexeme);
 
