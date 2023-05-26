@@ -7,24 +7,24 @@
 // Tipos de dato utilizados en las variables semánticas ($$, $1, $2, etc.).
 %union {
 	// No-terminales (frontend).
-	int program;
-	int expression;
-	int sentence;
-	int imagevar;
-	int imagedef;
-	int filtervar;
-	int filterdef;
-	int parametersdef;
-	int property;
-	int setvar;
-	int setdef;
-	int images;
-	int fordef;
-	int block;
-	int functions;
-	int axises;
-	int filters;
-	int positions;
+	Program program;
+	Expression expression;
+	Sentence sentence;
+	Imagevar imagevar;
+	Imagedef imagedef;
+	Filtervar filtervar;
+	Filterdef filterdef;
+	Parametersdef parametersdef;
+	Properties properties;
+	Setvar setvar;
+	Setdef setdef;
+	Images images;
+	Fordef fordef;
+	Block block;
+	Functions functions;
+	Axises axises;
+	Filters filters;
+	Positions positions;
 
 	// Terminales.
 	token token;
@@ -91,7 +91,7 @@
 %type <filtervar> filtervar;
 %type <filterdef> filterdef;
 %type <parametersdef> parametersdef;
-%type <property> property;
+%type <properties> properties;
 %type <setvar> setvar;
 %type <setdef> setdef;
 %type <images> images;
@@ -136,18 +136,18 @@ imagedef: IMAGE VAR_NAME EQUAL imagevar SEMI_COLON 												{ $$ = ImagedefGr
 	;
 
 filtervar: FILTER OPEN_PARENTHESIS STRING CLOSE_PARENTHESIS 									{ $$ = FiltervarParanthesisGrammarAction($3); }
-	| FILTER  OPEN_PARENTHESIS CLOSE_PARENTHESIS parametersdef 									{ $$ = FiltervarRecursiveGrammarAction($4); }
+	| FILTER OPEN_PARENTHESIS CLOSE_PARENTHESIS parametersdef 									{ $$ = FiltervarRecursiveGrammarAction($4); }
 	| VAR_NAME 																					{ $$ = FilterVarnameGrammarAction($1); }
 	;
 
 filterdef: FILTER VAR_NAME EQUAL filtervar SEMI_COLON 											{ $$ = FilterdefGrammarAction($2, $4); }
 	;
 
-parametersdef: DOT PARAMETER OPEN_PARENTHESIS property EQUAL FLOAT CLOSE_PARENTHESIS 			{ $$ = ParametersdefParenthesisGrammarAction($4, $6); } 
-	| DOT PARAMETER OPEN_PARENTHESIS property EQUAL FLOAT CLOSE_PARENTHESIS parametersdef 		{ $$ = ParametersdefRecursiveGrammarAction($4, $6, $8); }
+parametersdef: DOT PARAMETER OPEN_PARENTHESIS properties EQUAL FLOAT CLOSE_PARENTHESIS 			{ $$ = ParametersdefParenthesisGrammarAction($4, $6); }
+	| DOT PARAMETER OPEN_PARENTHESIS properties EQUAL FLOAT CLOSE_PARENTHESIS parametersdef 	{ $$ = ParametersdefRecursiveGrammarAction($4, $6, $8); }
 	;
 
-property: EXPOSURE 																				{ $$ = ExposureGrammarAction(); }
+properties: EXPOSURE 																			{ $$ = ExposureGrammarAction(); }
 	| LUMINOSITY 																				{ $$ = LuminosityGrammarAction(); }
 	| SHADOWS 																					{ $$ = ShadowsGrammarAction(); }
 	| CONTRAST 																					{ $$ = ContrastGrammarAction(); }
