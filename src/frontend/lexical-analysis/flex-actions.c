@@ -281,6 +281,7 @@ token VariableNamePatternAction(const char * lexeme, int length) {
 	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
 	char * str = malloc(length+1);
 	strncpy(str, lexeme, length);
+	str[length] = '\0';
 	yylval.string = str;
 	return VAR_NAME;
 }
@@ -289,6 +290,7 @@ token StringPatternAction(const char * lexeme, int length) {
 	LogDebug("StringPatternAction: '%s'.", lexeme);
 	char * str = malloc(length+1);
 	strncpy(str, lexeme, length);
+	str[length] = '\0';
 	yylval.string = str;
 	return STRING;
 }
