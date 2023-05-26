@@ -3,6 +3,7 @@
 #include "bison-actions.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
  * Implementación de "bison-grammar.h".
@@ -11,8 +12,7 @@
 /**
  * Esta función se ejecuta cada vez que se emite un error de sintaxis.
  */
-void yyerror(const char *string)
-{
+void yyerror(const char * string) {
 	LogError("Mensaje: '%s' debido a '%s' (linea %d).", string, yytext, yylineno);
 	LogError("En ASCII es:");
 	LogErrorRaw("\t");
@@ -24,332 +24,575 @@ void yyerror(const char *string)
 	LogErrorRaw("\n\n");
 }
 
-int ProgramGrammarAction(int expression)
-{
-	LogDebug("\tProgramGrammarAction(%d)", expression);
+Program ProgramGrammarAction(Expression expression) {
+	LogDebug("\tProgramGrammarAction(%p)", expression);
+
+	Program program = malloc(sizeof(struct ProgramNode));
+	program->expression = expression;
+
 	/*
 	 * "state" es una variable global que almacena el estado del compilador,
 	 * cuyo campo "succeed" indica si la compilación fue o no exitosa, la cual
 	 * es utilizada en la función "main".
 	 */
 	state.succeed = true;
-	return true;
+	state.program = program;
+
+	return program;
 }
 
-int ExpressionImagedefSentenceGrammarAction(int imagedef, int sentence)
-{
-	LogDebug("\tExpressionImagedefSentenceGrammarAction(%d, %d)", imagedef, sentence);
-	return true;
+Expression ExpressionImagedefSentenceGrammarAction(Imagedef imagedef, Sentence sentence) {
+	LogDebug("\tExpressionImagedefSentenceGrammarAction(%p, %p)", imagedef, sentence);
+
+	Expression new_guy = malloc(sizeof(struct ExpressionNode));
+	new_guy->type = EXPRESSIONTYPE_IMAGEDEF;
+	new_guy->imagedef = imagedef;
+	new_guy->sentence = sentence;
+
+	return new_guy;
 }
 
-int FilterdefExpressionGrammarAction(int filterdef, int expression)
-{
-	LogDebug("\tFilterdefExpressionGrammarAction(%d, %d)", filterdef, expression);
-	return true;
+Expression FilterdefExpressionGrammarAction(Filterdef filterdef, Expression expression) {
+	LogDebug("\tFilterdefExpressionGrammarAction(%p, %p)", filterdef, expression);
+
+	Expression new_guy = malloc(sizeof(struct ExpressionNode));
+	new_guy->type = EXPRESSIONTYPE_FILTERDEF;
+	new_guy->filterdef = filterdef;
+	new_guy->expression = expression;
+
+	return new_guy;
 }
 
-int SetdefExpressionGrammarAction(int setdef, int expression)
-{
-	LogDebug("\tSetdefExpressionGrammarAction(%d, %d)", setdef, expression);
-	return true;
+Expression SetdefExpressionGrammarAction(Setdef setdef, Expression expression) {
+	LogDebug("\tSetdefExpressionGrammarAction(%p, %p)", setdef, expression);
+
+	Expression new_guy = malloc(sizeof(struct ExpressionNode));
+	new_guy->type = EXPRESSIONTYPE_SETDEF;
+	new_guy->setdef = setdef;
+	new_guy->expression = expression;
+
+	return new_guy;
 }
 
-int FordefExpressionGrammarAction(int fordef, int expression)
-{
-	LogDebug("\tFordefExpressionGrammarAction(%d, %d)", fordef, expression);
-	return true;
+Expression FordefExpressionGrammarAction(Fordef fordef, Expression expression) {
+	LogDebug("\tFordefExpressionGrammarAction(%p, %p)", fordef, expression);
+
+	Expression new_guy = malloc(sizeof(struct ExpressionNode));
+	new_guy->type = EXPRESSIONTYPE_FORDEF;
+	new_guy->fordef = fordef;
+	new_guy->expression = expression;
+
+	return new_guy;
 }
 
-int ImagedefSenteceGrammarAction(int imagedef, int sentence)
-{
-	LogDebug("\tImagedefSenteceGrammarAction(%d, %d)", imagedef, sentence);
-	return true;
+Expression LambdaExpressionGrammarAction() {
+	LogDebug("\tLambdaExpressionGrammarAction");
+
+	Expression new_guy = malloc(sizeof(struct ExpressionNode));
+	new_guy->type = EXPRESSIONTYPE_LAMBDA;
+
+	return new_guy;
 }
 
-int FilterdefSenteceGrammarAction(int filterdef, int sentence)
-{
-	LogDebug("\tFilterdefSenteceGrammarAction(%d, %d)", filterdef, sentence);
-	return true;
+Sentence ImagedefSenteceGrammarAction(Imagedef imagedef, Sentence sentence) {
+	LogDebug("\tImagedefSenteceGrammarAction(%p, %p)", imagedef, sentence);
+
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_IMAGEDEF;
+	new_guy->imagedef = imagedef;
+	new_guy->sentence = sentence;
+
+	return new_guy;
 }
 
-int SetdefSentenceGrammarAction(int setdef, int sentence)
-{
-	LogDebug("\tSetdefSentenceGrammarAction(%d, %d)", setdef, sentence);
-	return true;
+Sentence FilterdefSenteceGrammarAction(Filterdef filterdef, Sentence sentence) {
+	LogDebug("\tFilterdefSenteceGrammarAction(%p, %p)", filterdef, sentence);
+	
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_FILTERDEF;
+	new_guy->filterdef = filterdef;
+	new_guy->sentence = sentence;
+
+	return new_guy;
 }
 
-int FordefSentenceGrammarAction(int fordef, int sentence)
-{
-	LogDebug("\tFordefSentenceGrammarAction(%d, %d)", fordef, sentence);
-	return true;
+Sentence SetdefSentenceGrammarAction(Setdef setdef, Sentence sentence) {
+	LogDebug("\tSetdefSentenceGrammarAction(%p, %p)", setdef, sentence);
+	
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_SETDEF;
+	new_guy->setdef = setdef;
+	new_guy->sentence = sentence;
+
+	return new_guy;}
+
+Sentence FordefSentenceGrammarAction(Fordef fordef, Sentence sentence) {
+	LogDebug("\tFordefSentenceGrammarAction(%p, %p)", fordef, sentence);
+	
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_FORDEF;
+	new_guy->fordef = fordef;
+	new_guy->sentence = sentence;
+
+	return new_guy;
 }
 
-int FunctionsSentenceGrammarAction(int functions, int sentence)
-{
-	LogDebug("\tFunctionsSentenceGrammarAction(%d, %d)", functions, sentence);
-	return true;
+Sentence FunctionsSentenceGrammarAction(Functions functions, Sentence sentence) {
+	LogDebug("\tFunctionsSentenceGrammarAction(%p, %p)", functions, sentence);
+	
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_FUNCTIONS;
+	new_guy->functions = functions;
+	new_guy->sentence = sentence;
+
+	return new_guy;
 }
 
-int ImagevarParenthesisGrammarAction(char *path)
-{
+Sentence LambdaSentenceGrammarAction() {
+	LogDebug("\tLambdaSentenceGrammarAction");
+
+	Sentence new_guy = malloc(sizeof(struct SentenceNode));
+	new_guy->type = SENTENCETYPE_LAMBDA;
+
+	return new_guy;
+}
+
+Imagevar ImagevarParenthesisGrammarAction(char * path) {
 	LogDebug("\tImagevarParenthesisGrammarAction(%s)", path);
-	return true;
+	
+	Imagevar new_guy = malloc(sizeof(struct ImagevarNode));
+	new_guy->type = IMAGEVARTYPE_PATH;
+	new_guy->path = path;
+
+	return new_guy;
 }
 
-int ImagevarVarnameGrammarAction(char *varname)
-{
+Imagevar ImagevarVarnameGrammarAction(char * varname) {
 	LogDebug("\tmagevarVarnameGrammarAction(%s)", varname);
-	return true;
+
+	Imagevar new_guy = malloc(sizeof(struct ImagevarNode));
+	new_guy->type = IMAGEVARTYPE_VAR_NAME;
+	new_guy->path = varname;
+
+	return new_guy;
 }
 
-int ImagedefGrammarAction(char *varname, int imagevar)
-{
-	LogDebug("\tImagedefGrammarAction(%s, %d)", varname, imagevar);
-	return true;
+Imagedef ImagedefGrammarAction(char * varname, Imagevar imagevar) {
+	LogDebug("\tImagedefGrammarAction(%s, %p)", varname, imagevar);
+
+	Imagedef new_guy = malloc(sizeof(struct ImagedefNode));
+	new_guy->var_name = varname;
+	new_guy->imagevar = imagevar;
+
+	return new_guy;
 }
 
-int FiltervarParanthesisGrammarAction(char * filtername)
-{
+Filtervar FiltervarParanthesisGrammarAction(char * filtername) {
 	LogDebug("\tFiltervarParanthesisGrammarAction(%s)", filtername);
-	return true;
+
+	Filtervar new_guy = malloc(sizeof(struct FiltervarNode));
+	new_guy->type = FILTERVARTYPE_FILTER_NAME;
+	new_guy->filter_name = filtername;
+
+	return new_guy;
 }
 
-int FiltervarRecursiveGrammarAction(int parametersdef)
-{
-	LogDebug("\tFiltervarRecursiveGrammarAction(%d)", parametersdef);
-	return true;
+Filtervar FiltervarRecursiveGrammarAction(Parametersdef parametersdef) {
+	LogDebug("\tFiltervarRecursiveGrammarAction(%p)", parametersdef);
+	
+	Filtervar new_guy = malloc(sizeof(struct FiltervarNode));
+	new_guy->type = FILTERVARTYPE_PARAMETERSDEF;
+	new_guy->parametersdef = parametersdef;
+
+	return new_guy;
 }
 
-int FilterVarnameGrammarAction(char *varname)
-{
+Filtervar FilterVarnameGrammarAction(char * varname) {
 	LogDebug("\tFilterVarnameGrammarAction(%s)", varname);
-	return true;
+
+	Filtervar new_guy = malloc(sizeof(struct FiltervarNode));
+	new_guy->type = FILTERVARTYPE_VAR_NAME;
+	new_guy->var_name = varname;
+
+	return new_guy;
 }
 
-int FilterdefGrammarAction(char *varname, int filtervar)
-{
-	LogDebug("\tFilterdefGrammarAction(%s, %d)", varname, filtervar);
-	return true;
+Filterdef FilterdefGrammarAction(char * varname, Filtervar filtervar) {
+	LogDebug("\tFilterdefGrammarAction(%s, %p)", varname, filtervar);
+
+	Filterdef new_guy = malloc(sizeof(struct FilterdefNode));
+	new_guy->var_name = varname;
+	new_guy->filtervar = filtervar;
+
+	return new_guy;
 }
 
-int ParametersdefParenthesisGrammarAction(int property, float value)
-{
-	LogDebug("\tParametersdefParenthesisGrammarAction(%d, %.2f)", property, value);
-	return true;
+Parametersdef ParametersdefParenthesisGrammarAction(Properties property, float value) {
+	LogDebug("\tParametersdefParenthesisGrammarAction(%p, %.2f)", property, value);
+	
+	Parametersdef new_guy = malloc(sizeof(struct ParametersdefNode));
+	new_guy->type = PARAMETERSDEFTYPE_LAST;
+	new_guy->property = property;
+	new_guy->value = value;
+
+	return new_guy;
 }
 
-int ParametersdefRecursiveGrammarAction(int property, float value, int parametersdef)
-{
-	LogDebug("\tParametersdefRecursiveGrammarAction(%d, %.2f, %d)", property, value, parametersdef);
-	return true;
+Parametersdef ParametersdefRecursiveGrammarAction(Properties property, float value, Parametersdef parametersdef) {
+	LogDebug("\tParametersdefRecursiveGrammarAction(%p, %.2f, %p)", property, value, parametersdef);
+
+	Parametersdef new_guy = malloc(sizeof(struct ParametersdefNode));
+	new_guy->type = PARAMETERSDEFTYPE_PARAMETER;
+	new_guy->property = property;
+	new_guy->value = value;
+	new_guy->parametersdef = parametersdef;
+
+	return new_guy;
 }
 
-int ExposureGrammarAction()
-{
+Properties ExposureGrammarAction() {
 	LogDebug("\tExposureGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_EXPOSURE;
+
+	return new_guy;
 }
 
-int LuminosityGrammarAction()
-{
+Properties LuminosityGrammarAction() {
 	LogDebug("\tLuminosityGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_LUMINOSITY;
+
+	return new_guy;
 }
 
-int ShadowsGrammarAction()
-{
+Properties ShadowsGrammarAction() {
 	LogDebug("\tShadowsGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_SHADOWS;
+
+	return new_guy;
 }
 
-int ContrastGrammarAction()
-{
+Properties ContrastGrammarAction() {
 	LogDebug("\tContrastGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_CONTRAST;
+
+	return new_guy;
 }
 
-int BrightnessGrammarAction()
-{
+Properties BrightnessGrammarAction() {
 	LogDebug("\tBrightnessGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_BRIGHTNESS;
+
+	return new_guy;
 }
 
-int SaturationGrammarAction()
-{
+Properties SaturationGrammarAction() {
 	LogDebug("\tSaturationGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_SATURATION;
+
+	return new_guy;
 }
 
-int OpacityGrammarAction()
-{
+Properties OpacityGrammarAction() {
 	LogDebug("\tOpacityGrammarAction");
-	return true;
+
+	Properties new_guy = malloc(sizeof(struct PropertiesNode));
+	new_guy->property = PROPERTY_OPACITY;
+
+	return new_guy;
 }
 
-int SetvarParenthesisGrammarAction(int images)
-{
-	LogDebug("\tSetvarParenthesisGrammarAction(%d)", images);
-	return true;
+Setvar SetvarParenthesisGrammarAction(Images images) {
+	LogDebug("\tSetvarParenthesisGrammarAction(%p)", images);
+
+	Setvar new_guy = malloc(sizeof(struct SetvarNode));
+	new_guy->type = SETVARTYPE_SET;
+	new_guy->images = images;
+
+	return new_guy;
 }
 
-int SetvarVarnameGrammarAction(char * varname)
-{
+Setvar SetvarVarnameGrammarAction(char * varname) {
 	LogDebug("\tSetvarVarnameGrammarAction(%s)", varname);
-	return true;
+
+	Setvar new_guy = malloc(sizeof(struct SetvarNode));
+	new_guy->type = SETVARTYPE_VAR_NAME;
+	new_guy->var_name = varname;
+
+	return new_guy;
 }
 
-int SetdefGrammarAction(char *varname, int setvar)
-{
-	LogDebug("\tSetdefGrammarAction(%s, %d)", varname, setvar);
-	return true;
+Setdef SetdefGrammarAction(char * varname, Setvar setvar) {
+	LogDebug("\tSetdefGrammarAction(%s, %p)", varname, setvar);
+
+	Setdef new_guy = malloc(sizeof(struct SetdefNode));
+	new_guy->var_name = varname;
+	new_guy->setvar = setvar;
+
+	return new_guy;
 }
 
-int ImagesGrammarAction(int imagevar)
-{
-	LogDebug("\tImagesGrammarAction(%d)", imagevar);
-	return true;
+Images ImagesGrammarAction(Imagevar imagevar) {
+	LogDebug("\tImagesGrammarAction(%p)", imagevar);
+
+	Images new_guy = malloc(sizeof(struct ImagesNode));
+	new_guy->type = IMAGESTYPE_SINGLE;
+	new_guy->imagevar = imagevar;
+
+	return new_guy;
 }
 
-int ImagesRecursiveGrammarAction(int imagevar, int images)
-{
-	LogDebug("\tImagesRecursiveGrammarAction(%d, %d)", imagevar, images);
-	return true;
+Images ImagesRecursiveGrammarAction(Imagevar imagevar, Images images) {
+	LogDebug("\tImagesRecursiveGrammarAction(%p, %p)", imagevar, images);
+
+	Images new_guy = malloc(sizeof(struct ImagesNode));
+	new_guy->type = IMAGESTYPE_MULTIPLE;
+	new_guy->imagevar = imagevar;
+	new_guy->images = images;
+
+	return new_guy;	
 }
 
-int FordefGrammarAction(char *varname, int setvar, int block)
-{
-	LogDebug("\tFordefGrammarAction(%s, %d, %d)", varname, setvar, block);
-	return true;
+Fordef FordefGrammarAction(char * varname, Setvar setvar, Block block) {
+	LogDebug("\tFordefGrammarAction(%s, %p, %p)", varname, setvar, block);
+	
+	Fordef new_guy = malloc(sizeof(struct FordefNode));
+	new_guy->var_name = varname;
+	new_guy->setvar = setvar;
+	new_guy->block = block;
+
+	return new_guy;
 }
 
-int BlockGrammarAction(int functions)
-{
-	LogDebug("\tBlockGrammarAction(%d)", functions);
-	return true;
+Block BlockGrammarAction(Functions functions) {
+	LogDebug("\tBlockGrammarAction(%p)", functions);
+
+	Block new_guy = malloc(sizeof(struct BlockNode));
+	new_guy->type = BLOCKTYPE_SINGLE;
+	new_guy->functions = functions;
+
+	return new_guy;
 }
 
-int BlockRecursiveGrammarAction(int functions, int block)
-{
-	LogDebug("\tBlockRecursiveGrammarAction(%d, %d)", functions, block);
-	return true;
+Block BlockRecursiveGrammarAction(Functions functions, Block block) {
+	LogDebug("\tBlockRecursiveGrammarAction(%p, %p)", functions, block);
+
+	Block new_guy = malloc(sizeof(struct BlockNode));
+	new_guy->type = BLOCKTYPE_MULTIPLE;
+	new_guy->functions = functions;
+	new_guy->block = block;
+
+	return new_guy;
 }
 
-int ApplyFiltersGrammarAction(char *varname, int filters)
-{
-	LogDebug("\tApplyFiltersGrammarAction(%s, %d)", varname, filters);
-	return true;
+Functions ApplyFiltersGrammarAction(char * varname, Filters filters) {
+	LogDebug("\tApplyFiltersGrammarAction(%s, %p)", varname, filters);
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_APPLY_FILTERS;
+	new_guy->var_name = varname;
+	new_guy->filters = filters;
+
+	return new_guy;
 }
 
-int OverlapImagesGrammarAction(char *varname, int imagevar, int position)
-{
-	LogDebug("\tOverlapImagesGrammarAction(%s, %d, %d)", varname, imagevar, position);
-	return true;
+Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Positions position) {
+	LogDebug("\tOverlapImagesGrammarAction(%s, %p, %p)", varname, imagevar, position);
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_OVERLAP;
+	new_guy->var_name = varname;
+	new_guy->imagevar = imagevar;
+	new_guy->position = position;
+
+	return new_guy;
 }
 
-int ResizeImageGrammarAction(char *varname, float width, float height)
-{
+Functions ResizeImageGrammarAction(char * varname, float width, float height) {
 	LogDebug("\tResizeImageGrammarAction(%s, %.2f, %.2f)", varname, width, height);
-	return true;
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_RESIZE;
+	new_guy->var_name = varname;
+	new_guy->width = width;
+	new_guy->height = height;
+
+	return new_guy;
 }
 
-int UnionImagesGrammarAction(char *varname, int imagevar, int axis)
-{
-	LogDebug("\tUnionImagesGrammarAction(%s, %d, %d)", varname, imagevar, axis);
-	return true;
+Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axis) {
+	LogDebug("\tUnionImagesGrammarAction(%s, %p, %p)", varname, imagevar, axis);
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_UNION;
+	new_guy->var_name = varname;
+	new_guy->imagevar = imagevar;
+	new_guy->axis = axis;
+
+	return new_guy;
 }
 
-int TrimImageGrammarAction(char *varname, float width, float height, int position)
-{
-	LogDebug("\tTrimImageGrammarAction(%s, %.2f, %.2f, %d)", varname, width, height, position);
-	return true;
+Functions TrimImageGrammarAction(char * varname, float width, float height, Positions position) {
+	LogDebug("\tTrimImageGrammarAction(%s, %.2f, %.2f, %p)", varname, width, height, position);
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_TRIM;
+	new_guy->var_name = varname;
+	new_guy->width = width;
+	new_guy->height = height;
+	new_guy->position = position;
+
+	return new_guy;
 }
 
-int SaveFormatGrammarAction(char *varname, char *format)
-{
+Functions SaveFormatGrammarAction(char * varname, char * format) {
 	LogDebug("\tSaveFormatGrammarAction(%s, %s)", varname, format);
-	return true;
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_SAVE_WITH_FORMAT;
+	new_guy->var_name = varname;
+	new_guy->format = format;
+
+	return new_guy;
 }
 
-int SaveGrammarAction(char *varname)
-{
+Functions SaveGrammarAction(char * varname) {
 	LogDebug("\tSaveGrammarAction(%s)", varname);
-	return true;
+
+	Functions new_guy = malloc(sizeof(struct FunctionsNode));
+	new_guy->type = FUNCTIONSTYPE_SAVE;
+	new_guy->var_name = varname;
+
+	return new_guy;
 }
 
-int AxisXGrammarAction()
-{
+Axises AxisXGrammarAction() {
 	LogDebug("\tAxisXGrammarAction");
-	return true;
+
+	Axises new_guy = malloc(sizeof(struct AxisesNode));
+	new_guy->axis = AXIS_X;
+
+	return new_guy;
 }
 
-int AxisYGrammarAction()
-{
+Axises AxisYGrammarAction() {
 	LogDebug("\tAxisYGrammarAction");
-	return true;
+
+	Axises new_guy = malloc(sizeof(struct AxisesNode));
+	new_guy->axis = AXIS_Y;
+
+	return new_guy;
 }
 
-int FiltersGrammarAction(int filtervar)
-{
-	LogDebug("\tFiltersGrammarAction(%d)", filtervar);
-	return true;
+Filters FiltersGrammarAction(Filtervar filtervar) {
+	LogDebug("\tFiltersGrammarAction(%p)", filtervar);
+
+	Filters new_guy = malloc(sizeof(struct FiltersNode));
+	new_guy->type = FILTERSTYPE_SINGLE;
+	new_guy->filtervar = filtervar;
+
+	return new_guy;
 }
 
-int FiltersRecursiveGrammarAction(int filtervar, int filters)
-{
-	LogDebug("\tFiltersRecursiveGrammarAction(%d, %d)", filtervar, filters);
-	return true;
+Filters FiltersRecursiveGrammarAction(Filtervar filtervar, Filters filters) {
+	LogDebug("\tFiltersRecursiveGrammarAction(%p, %p)", filtervar, filters);
+
+	Filters new_guy = malloc(sizeof(struct FiltersNode));
+	new_guy->type = FILTERSTYPE_MULTIPLE;
+	new_guy->filtervar = filtervar;
+	new_guy->filters = filters;
+
+	return new_guy;
 }
 
-int PositionTopLeftGrammarAction()
-{
+Positions PositionTopLeftGrammarAction() {
 	LogDebug("\tPositionTopLeftGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_TOP_LEFT;
+
+	return new_guy;
 }
 
-int PositionTopCenterGrammarAction()
-{
+Positions PositionTopCenterGrammarAction() {
 	LogDebug("\tPositionTopCenterGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_TOP_CENTER;
+
+	return new_guy;
 }
 
-int PositionTopRightGrammarAction()
-{
+Positions PositionTopRightGrammarAction() {
 	LogDebug("\tPositionTopRightGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_TOP_RIGHT;
+
+	return new_guy;
 }
 
-int PositionCenterLeftGrammarAction()
-{
+Positions PositionCenterLeftGrammarAction() {
 	LogDebug("\tPositionCenterLeftGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_CENTER_LEFT;
+
+	return new_guy;
 }
 
-int PositionCenterCenterGrammarAction()
-{
+Positions PositionCenterCenterGrammarAction() {
 	LogDebug("\tPositionCenterCenterGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_CENTER_CENTER;
+
+	return new_guy;
 }
 
-int PositionCenterRightGrammarAction()
-{
+Positions PositionCenterRightGrammarAction() {
 	LogDebug("\tPositionCenterRightGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_CENTER_RIGHT;
+
+	return new_guy;
 }
 
-int PositionBottomLeftGrammarAction()
-{
+Positions PositionBottomLeftGrammarAction() {
 	LogDebug("\tPositionBottomLeftGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_BOTTOM_LEFT;
+
+	return new_guy;
 }
 
-int PositionBottomCenterGrammarAction()
-{
+Positions PositionBottomCenterGrammarAction() {
 	LogDebug("\tPositionBottomCenterGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_BOTTOM_CENTER;
+
+	return new_guy;
 }
 
-int PositionBottomRightGrammarAction()
-{
+Positions PositionBottomRightGrammarAction() {
 	LogDebug("\tPositionBottomRightGrammarAction");
-	return true;
+
+	Positions new_guy = malloc(sizeof(struct PositionsNode));
+	new_guy->position = POSITION_BOTTOM_RIGHT;
+
+	return new_guy;
 }
