@@ -73,4 +73,14 @@ int AxisYGrammarAction();
 int FiltersGrammarAction(int filtervar);
 int FiltersRecursiveGrammarAction(int filtervar, int filters);
 
+int PositionTopLeftGrammarAction();
+int PositionTopCenterGrammarAction();
+int PositionTopRightGrammarAction();
+int PositionCenterLeftGrammarAction();
+int PositionCenterCenterGrammarAction();
+int PositionCenterRightGrammarAction();
+int PositionBottomLeftGrammarAction();
+int PositionBottomCenterGrammarAction();
+int PositionBottomRightGrammarAction();
+
 #endif

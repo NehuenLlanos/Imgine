@@ -223,6 +223,60 @@ token YAxisPatternAction(const char * lexeme) {
 	return Y;
 }
 
+token TopLeftPaternAction(const char * lexeme) {
+	LogDebug("TopLeftPaternAction: '%s'.", lexeme);
+	yylval.token = TOP_LEFT;
+	return TOP_LEFT;
+}
+
+token TopCenterPaternAction(const char * lexeme) {
+	LogDebug("TopCenterPaternAction: '%s'.", lexeme);
+	yylval.token = TOP_CENTER;
+	return TOP_CENTER;
+}
+
+token TopRightPaternAction(const char * lexeme) {
+	LogDebug("TopRightPaternAction: '%s'.", lexeme);
+	yylval.token = TOP_RIGHT;
+	return TOP_RIGHT;
+}
+
+token CenterLeftPaternAction(const char * lexeme) {
+	LogDebug("CenterLeftPaternAction: '%s'.", lexeme);
+	yylval.token = CENTER_LEFT;
+	return CENTER_LEFT;
+}
+
+token CenterCenterPaternAction(const char * lexeme) {
+	LogDebug("CenterCenterPaternAction: '%s'.", lexeme);
+	yylval.token = CENTER_CENTER;
+	return CENTER_CENTER;
+}
+
+token CenterRightPaternAction(const char * lexeme) {
+	LogDebug("CenterRightPaternAction: '%s'.", lexeme);
+	yylval.token = CENTER_RIGHT;
+	return CENTER_RIGHT;
+}
+
+token BottomLeftPaternAction(const char * lexeme) {
+	LogDebug("BottomLeftPaternAction: '%s'.", lexeme);
+	yylval.token = BOTTOM_LEFT;
+	return BOTTOM_LEFT;
+}
+
+token BottomCenterPaternAction(const char * lexeme) {
+	LogDebug("BottomCenterPaternAction: '%s'.", lexeme);
+	yylval.token = BOTTOM_CENTER;
+	return BOTTOM_CENTER;
+}
+
+token BottomRightPaternAction(const char * lexeme) {
+	LogDebug("BottomRightPaternAction: '%s'.", lexeme);
+	yylval.token = BOTTOM_RIGHT;
+	return BOTTOM_RIGHT;
+}
+
 token VariableNamePatternAction(const char * lexeme, int length) {
 	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
 	char * str = malloc(length+1);
@@ -243,12 +297,6 @@ token FloatPatternAction(const char * lexeme) {
 	LogDebug("FloatPatternAction: '%s'.", lexeme);
 	yylval.floatNum = atof(lexeme);
 	return FLOAT;
-}
-
-token IntegerPatternAction(const char * lexeme) {
-	LogDebug("IntegerPatternAction: '%s'.", lexeme);
-	yylval.integerNum = atoi(lexeme);
-	return INTEGER;
 }
 
 void CommentPatternAction(const char * lexeme) {

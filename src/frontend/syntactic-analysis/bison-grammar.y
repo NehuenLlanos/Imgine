@@ -6,7 +6,6 @@
 
 // Tipos de dato utilizados en las variables semánticas ($$, $1, $2, etc.).
 %union {
-
 	// No-terminales (frontend).
 	int program;
 	int expression;
@@ -25,11 +24,11 @@
 	int functions;
 	int axises;
 	int filters;
+	int positions;
 
 	// Terminales.
 	token token;
 	float floatNum;
-	int integerNum;
 	char * string;
 }
 
@@ -68,12 +67,20 @@
 %token <token> OPACITY
 %token <token> X
 %token <token> Y
+%token <token> TOP_LEFT
+%token <token> TOP_CENTER
+%token <token> TOP_RIGHT
+%token <token> CENTER_LEFT
+%token <token> CENTER_CENTER
+%token <token> CENTER_RIGHT
+%token <token> BOTTOM_LEFT
+%token <token> BOTTOM_CENTER
+%token <token> BOTTOM_RIGHT
 
 %token <string> VAR_NAME
 %token <string> STRING
 
 %token <floatNum> FLOAT
-%token <integerNum> INTEGER
 
 // Tipos de dato para los no-terminales generados desde Bison.
 %type <program> program
@@ -93,6 +100,7 @@
 %type <functions> functions;
 %type <axises> axises;
 %type <filters> filters;
+%type <positions> positions;
 
 // Reglas de asociatividad y precedencia (de menor a mayor).
 
@@ -167,10 +175,10 @@ block: functions 																				{ $$ = BlockGrammarAction($1); }
 	;
 
 functions: VAR_NAME DOT APPLY OPEN_PARENTHESIS filters CLOSE_PARENTHESIS SEMI_COLON 																{ $$ = ApplyFiltersGrammarAction($1, $5); }
-	| VAR_NAME DOT OVERLAP OPEN_PARENTHESIS	imagevar COMMA POSITION EQUAL INTEGER CLOSE_PARENTHESIS SEMI_COLON 										{ $$ = OverlapImagesGrammarAction($1, $5, $9); }
+	| VAR_NAME DOT OVERLAP OPEN_PARENTHESIS	imagevar COMMA POSITION EQUAL positions CLOSE_PARENTHESIS SEMI_COLON 									{ $$ = OverlapImagesGrammarAction($1, $5, $9); }
 	| VAR_NAME DOT RESIZE OPEN_PARENTHESIS WIDTH EQUAL FLOAT COMMA HEIGHT EQUAL FLOAT CLOSE_PARENTHESIS SEMI_COLON 									{ $$ = ResizeImageGrammarAction($1, $7, $11); }
 	| VAR_NAME DOT UNION OPEN_PARENTHESIS imagevar COMMA AXIS EQUAL axises CLOSE_PARENTHESIS SEMI_COLON 											{ $$ = UnionImagesGrammarAction($1, $5, $9); }	
-	| VAR_NAME DOT TRIM OPEN_PARENTHESIS WIDTH EQUAL FLOAT COMMA HEIGHT EQUAL FLOAT COMMA POSITION EQUAL INTEGER CLOSE_PARENTHESIS SEMI_COLON 		{ $$ = TrimImageGrammarAction($1, $7, $11, $15); }
+	| VAR_NAME DOT TRIM OPEN_PARENTHESIS WIDTH EQUAL FLOAT COMMA HEIGHT EQUAL FLOAT COMMA POSITION EQUAL positions CLOSE_PARENTHESIS SEMI_COLON 	{ $$ = TrimImageGrammarAction($1, $7, $11, $15); }
 	| VAR_NAME DOT SAVE OPEN_PARENTHESIS FORMAT EQUAL STRING CLOSE_PARENTHESIS SEMI_COLON 															{ $$ = SaveFormatGrammarAction($1, $7); }
 	| VAR_NAME DOT SAVE OPEN_PARENTHESIS CLOSE_PARENTHESIS SEMI_COLON 																				{ $$ = SaveGrammarAction($1); }
 	;
@@ -181,6 +189,17 @@ axises: X 																						{ $$ = AxisXGrammarAction(); }
 
 filters: filtervar 																				{ $$ = FiltersGrammarAction($1); }
 	| filtervar COMMA filters 																	{ $$ = FiltersRecursiveGrammarAction($1, $3); }
+	;
+
+positions: TOP_LEFT																				{ $$ = PositionTopLeftGrammarAction(); }
+	| TOP_CENTER																				{ $$ = PositionTopCenterGrammarAction(); }
+	| TOP_RIGHT																					{ $$ = PositionTopRightGrammarAction(); }
+	| CENTER_LEFT																				{ $$ = PositionCenterLeftGrammarAction(); }
+	| CENTER_CENTER																				{ $$ = PositionCenterCenterGrammarAction(); }
+	| CENTER_RIGHT																				{ $$ = PositionCenterRightGrammarAction(); }
+	| BOTTOM_LEFT																				{ $$ = PositionBottomLeftGrammarAction(); }
+	| BOTTOM_CENTER																				{ $$ = PositionBottomCenterGrammarAction(); }
+	| BOTTOM_RIGHT																				{ $$ = PositionBottomRightGrammarAction(); }
 	;
 
 %%

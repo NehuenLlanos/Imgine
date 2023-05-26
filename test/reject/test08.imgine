@@ -12,9 +12,9 @@ image im8 = image("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Prae
 for im in set(im1, im2, im3, im4, im5, im6, im7, im8) {
     filter my_filter = filter("grayscale");
     
-    im.overlap(image("path"), position=5);
+    im.overlap(image("path"), position=center-center);
     im.resize(width=1000.0, height=1000.0);
-    im.trim(width=500.0, height=500.0, position=5);
+    im.trim(width=500.0, height=500.0, position=center-center);
     im.apply(my_filter);
     im.save();
 }

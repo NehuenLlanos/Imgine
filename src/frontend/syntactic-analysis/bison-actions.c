@@ -307,3 +307,57 @@ int FiltersRecursiveGrammarAction(int filtervar, int filters)
 	LogDebug("\tFiltersRecursiveGrammarAction(%d, %d)", filtervar, filters);
 	return true;
 }
+
+int PositionTopLeftGrammarAction()
+{
+	LogDebug("\tPositionTopLeftGrammarAction");
+	return true;
+}
+
+int PositionTopCenterGrammarAction()
+{
+	LogDebug("\tPositionTopCenterGrammarAction");
+	return true;
+}
+
+int PositionTopRightGrammarAction()
+{
+	LogDebug("\tPositionTopRightGrammarAction");
+	return true;
+}
+
+int PositionCenterLeftGrammarAction()
+{
+	LogDebug("\tPositionCenterLeftGrammarAction");
+	return true;
+}
+
+int PositionCenterCenterGrammarAction()
+{
+	LogDebug("\tPositionCenterCenterGrammarAction");
+	return true;
+}
+
+int PositionCenterRightGrammarAction()
+{
+	LogDebug("\tPositionCenterRightGrammarAction");
+	return true;
+}
+
+int PositionBottomLeftGrammarAction()
+{
+	LogDebug("\tPositionBottomLeftGrammarAction");
+	return true;
+}
+
+int PositionBottomCenterGrammarAction()
+{
+	LogDebug("\tPositionBottomCenterGrammarAction");
+	return true;
+}
+
+int PositionBottomRightGrammarAction()
+{
+	LogDebug("\tPositionBottomRightGrammarAction");
+	return true;
+}

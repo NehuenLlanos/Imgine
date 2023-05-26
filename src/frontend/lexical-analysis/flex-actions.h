@@ -59,10 +59,19 @@ token OpacityPatternAction(const char * lexeme);
 token XAxisPatternAction(const char * lexeme);
 token YAxisPatternAction(const char * lexeme);
 
+token TopLeftPaternAction(const char * lexeme);
+token TopCenterPaternAction(const char * lexeme);
+token TopRightPaternAction(const char * lexeme);
+token CenterLeftPaternAction(const char * lexeme);
+token CenterCenterPaternAction(const char * lexeme);
+token CenterRightPaternAction(const char * lexeme);
+token BottomLeftPaternAction(const char * lexeme);
+token BottomCenterPaternAction(const char * lexeme);
+token BottomRightPaternAction(const char * lexeme);
+
 token VariableNamePatternAction(const char * lexeme, int length);
 token StringPatternAction(const char * lexeme, int length);
 token FloatPatternAction(const char * lexeme);
-token IntegerPatternAction(const char * lexeme);
 
 void CommentPatternAction(const char * lexeme);
 

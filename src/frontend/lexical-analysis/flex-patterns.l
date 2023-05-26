@@ -17,7 +17,6 @@
 %x string
 
 /* Patrones reutilizables. */
-position	    [1-9]
 whitespace		[ \f\n\r\t\v]
 float           [0-9]+\.[0-9]+
 variableName    [a-zA-Z][a-zA-Z0-9_]*
@@ -64,13 +63,22 @@ variableName    [a-zA-Z][a-zA-Z0-9_]*
 "x"                                         { return XAxisPatternAction(yytext); }
 "y"                                         { return YAxisPatternAction(yytext); }
 
+"top-left"                                  { return TopLeftPaternAction(yytext); }
+"top-center"                                { return TopCenterPaternAction(yytext); }
+"top-right"                                 { return TopRightPaternAction(yytext); }
+"center-left"                               { return CenterLeftPaternAction(yytext); }
+"center-center"                             { return CenterCenterPaternAction(yytext); }
+"center-right"                              { return CenterRightPaternAction(yytext); }
+"bottom-left"                               { return BottomLeftPaternAction(yytext); }
+"bottom-center"                             { return BottomCenterPaternAction(yytext); }
+"bottom-right"                              { return BottomRightPaternAction(yytext); }
+
 \"                                          { BEGIN(string); }
 <string>\"                                  { BEGIN(INITIAL); }
 <string>((\\.)|([^\"]))+					{ return StringPatternAction(yytext, yyleng); }
 
 {variableName}								{ return VariableNamePatternAction(yytext, yyleng); }
 {float}                                     { return FloatPatternAction(yytext); }
-{position}                                  { return IntegerPatternAction(yytext); }
 
 {whitespace}								{ IgnoredPatternAction(yytext); }
 

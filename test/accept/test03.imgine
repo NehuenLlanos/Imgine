@@ -6,6 +6,6 @@ image image_3 = image("path/to/image_3");
 watermark.apply(filter().parameter(opacity=0.5));
 
 for im in set(image_1, image_2, image_3) {
-    im.overlap(watermark, position=9);
+    im.overlap(watermark, position=bottom-right);
     im.save();
 }
