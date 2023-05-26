@@ -1,4 +1,5 @@
 #include "../../backend/support/logger.h"
+#include "../../backend/support/garbage-collector.h"
 #include "flex-actions.h"
 #include <stdlib.h>
 #include <string.h>
@@ -279,7 +280,7 @@ token BottomRightPaternAction(const char * lexeme) {
 
 token VariableNamePatternAction(const char * lexeme, int length) {
 	LogDebug("VariableNamePatternAction: '%s'.", lexeme);
-	char * str = malloc(length+1);
+	char * str = Malloc(length+1);
 	strncpy(str, lexeme, length);
 	str[length] = '\0';
 	yylval.string = str;
@@ -288,7 +289,7 @@ token VariableNamePatternAction(const char * lexeme, int length) {
 
 token StringPatternAction(const char * lexeme, int length) {
 	LogDebug("StringPatternAction: '%s'.", lexeme);
-	char * str = malloc(length+1);
+	char * str = Malloc(length+1);
 	strncpy(str, lexeme, length);
 	str[length] = '\0';
 	yylval.string = str;
