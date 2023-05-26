@@ -13,12 +13,14 @@
 /* Dispone una variable global "yylineno" con el número de línea actual. */
 %option yylineno
 
+/* Contextos */
+%x string
+
 /* Patrones reutilizables. */
 position	    [1-9]
 whitespace		[ \f\n\r\t\v]
 float           [0-9]+\.[0-9]+
 variableName    [a-zA-Z][a-zA-Z0-9_]*
-str             .+
 
 %%
 
@@ -62,8 +64,11 @@ str             .+
 "x"                                         { return XAxisPatternAction(yytext); }
 "y"                                         { return YAxisPatternAction(yytext); }
 
-{variableName}+								{ return VariableNamePatternAction(yytext, yyleng); }
-\"{str}\"								    { return StringPatternAction(yytext, yyleng); }
+\"                                          { BEGIN(string); }
+<string>\"                                  { BEGIN(INITIAL); }
+<string>((\\.)|([^\"]))+					{ return StringPatternAction(yytext, yyleng); }
+
+{variableName}								{ return VariableNamePatternAction(yytext, yyleng); }
 {float}                                     { return FloatPatternAction(yytext); }
 {position}                                  { return IntegerPatternAction(yytext); }
 
