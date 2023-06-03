@@ -28,7 +28,7 @@ const int main(const int argumentCount, const char ** arguments) {
 			// inicial de la gramática satisfactoriamente.
 			if (state.succeed) {
 				LogInfo("La compilacion fue exitosa.");
-				// Generator(state.result);
+				Generate(state.program);
 			}
 			else {
 				LogError("Se produjo un error en la aplicacion.");
@@ -44,7 +44,6 @@ const int main(const int argumentCount, const char ** arguments) {
 		default:
 			LogError("Error desconocido mientras se ejecutaba el analizador Bison (codigo %d).", result);
 	}
-	yylex_destroy();
 	FreeAll();
 	LogInfo("Fin.");
 	return result;
