@@ -173,7 +173,7 @@ Imagevar ImagevarVarnameGrammarAction(char * varname) {
 
 	Imagevar new_guy = Malloc(sizeof(struct ImagevarNode));
 	new_guy->type = IMAGEVARTYPE_VAR_NAME;
-	new_guy->path = varname;
+	new_guy->var_name = varname;
 
 	return new_guy;
 }
