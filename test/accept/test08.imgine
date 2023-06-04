@@ -20,4 +20,4 @@ im.apply(
 
 
 
-im.save(format="formato formatoso");
+im.save();

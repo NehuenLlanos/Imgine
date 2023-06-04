@@ -66,7 +66,6 @@ Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Position
 Functions ResizeImageGrammarAction(char * varname, float width, float height);
 Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axis);
 Functions TrimImageGrammarAction(char * varname, float width, float height, Positions position);
-Functions SaveFormatGrammarAction(char * varname, char * format);
 Functions SaveGrammarAction(char * varname);
 
 Axises AxisXGrammarAction();

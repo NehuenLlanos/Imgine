@@ -171,7 +171,6 @@ typedef enum {
 	FUNCTIONSTYPE_RESIZE,
 	FUNCTIONSTYPE_UNION,
 	FUNCTIONSTYPE_TRIM,
-	FUNCTIONSTYPE_SAVE_WITH_FORMAT,
 	FUNCTIONSTYPE_SAVE
 } FunctionsNodeType;
 
@@ -184,7 +183,6 @@ struct FunctionsNode {
 	float width;
 	float height;
 	Axises axis;
-	char * format;
 };
 
 typedef enum {

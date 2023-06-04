@@ -457,17 +457,6 @@ Functions TrimImageGrammarAction(char * varname, float width, float height, Posi
 	return new_guy;
 }
 
-Functions SaveFormatGrammarAction(char * varname, char * format) {
-	LogDebug("\tSaveFormatGrammarAction(%s, %s)", varname, format);
-
-	Functions new_guy = Malloc(sizeof(struct FunctionsNode));
-	new_guy->type = FUNCTIONSTYPE_SAVE_WITH_FORMAT;
-	new_guy->var_name = varname;
-	new_guy->format = format;
-
-	return new_guy;
-}
-
 Functions SaveGrammarAction(char * varname) {
 	LogDebug("\tSaveGrammarAction(%s)", varname);
 

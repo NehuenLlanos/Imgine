@@ -51,7 +51,6 @@ variableName    [a-zA-Z][a-zA-Z0-9_]*
 "height"                                    { return HeightPatternAction(yytext); }
 "position"                                  { return PositionPatternAction(yytext); }
 "axis"                                      { return AxisPatternAction(yytext); }
-"format"                                    { return FormatPatternAction(yytext); }
 "exposure"                                  { return ExposurePatternAction(yytext); }
 "luminosity"                                { return LuminosityPatternAction(yytext); }
 "shadows"                                   { return ShadowsPatternAction(yytext); }
