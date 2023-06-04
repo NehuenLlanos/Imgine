@@ -47,7 +47,6 @@ token WidthPatternAction(const char * lexeme);
 token HeightPatternAction(const char * lexeme);
 token PositionPatternAction(const char * lexeme);
 token AxisPatternAction(const char * lexeme);
-token FormatPatternAction(const char * lexeme);
 token ExposurePatternAction(const char * lexeme);
 token LuminosityPatternAction(const char * lexeme);
 token ShadowsPatternAction(const char * lexeme);

@@ -304,9 +304,6 @@ void GenerateFunctions(Functions functions) {
 			}			
 			fprintf(file, "))");
 			break;
-		case FUNCTIONSTYPE_SAVE_WITH_FORMAT:
-			// FIXME DELETE
-			break;
 		case FUNCTIONSTYPE_SAVE:
 			// FIXME tabla de simbolos -> el path se obtiene de ahi
 			// char path[] = "path";

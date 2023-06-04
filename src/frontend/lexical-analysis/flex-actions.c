@@ -164,12 +164,6 @@ token AxisPatternAction(const char * lexeme) {
 	return AXIS;
 }
 
-token FormatPatternAction(const char * lexeme) {
-	LogDebug("FormatPatternAction: '%s'.", lexeme);
-	yylval.token = FORMAT;
-	return FORMAT;
-}
-
 token ExposurePatternAction(const char * lexeme) {
 	LogDebug("ExposurePatternAction: '%s'.", lexeme);
 	yylval.token = EXPOSURE;

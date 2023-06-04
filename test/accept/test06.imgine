@@ -1,4 +1,4 @@
 for i in set(image("path1"), image("path2"), image("path3"), image("path4")) {
     i.resize(width=125.0, height=1722.2);
-    i.save(format="jpeg");
+    i.save();
 }
