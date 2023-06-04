@@ -1,3 +1,5 @@
+#include <unistd.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <string.h>
 #include "../support/logger.h"
@@ -32,7 +34,25 @@ void Generate(Program program) {
 
 	fclose(file);
 
-	// fork -> execv
+	int status;
+	pid_t pid = fork();
+
+	if (pid == 0) {
+		printf("Entre gil");
+		char * args[] = {"/usr/bin/python3", SOURCE_FILENAME, NULL};
+		execv(args[0], args);
+	} else if (pid == -1) {
+		LogError("Error al forkear");
+	} else {
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status)){
+			printf("Error\n");
+		}
+		else if (WEXITSTATUS(status)){
+			printf("Exited Normally\n");
+		}
+
+	}
 }
 
 void GenerateExpression(Expression expression) {
@@ -85,11 +105,11 @@ char * GenerateImagevar(Imagevar imagevar) {
 	char * answer;
 	switch (imagevar->type) {
 		case IMAGEVARTYPE_PATH:
-			answer = Malloc(14 + strlen(imagevar->path) + 1);
+			answer = Malloc(30 + strlen(imagevar->path) + 1);
 			strcpy(answer, "Image.open(\"");
 			strcpy(&answer[12], imagevar->path);
-			strcpy(&answer[12 + strlen(imagevar->path)], "\")");
-			answer[14 + strlen(imagevar->path)] = '\0';
+			strcpy(&answer[12 + strlen(imagevar->path)], "\").convert(\"RGBA\")");
+			answer[30 + strlen(imagevar->path)] = '\0';
 			break;
 		case IMAGEVARTYPE_VAR_NAME:
 			answer = Malloc(strlen(imagevar->var_name) + 1);
@@ -150,7 +170,7 @@ void GenerateParameter(Property property, float value) {
 			strcpy(property_str, "opacity");
 			break;
 	}
-	fprintf(file, ".add(\"%s, %.2f\")", property_str, value);
+	fprintf(file, ".add(\"%s\", %.2f)", property_str, value);
 }
 
 void GenerateParametersdef(Parametersdef parametersdef) {
@@ -307,8 +327,8 @@ void GenerateFunctions(Functions functions) {
 		case FUNCTIONSTYPE_SAVE:
 			// FIXME tabla de simbolos -> el path se obtiene de ahi
 			// char path[] = "path";
-			// fprintf(file, "%s.save(os.path.dirname(%s) + \"output\" + os.path.splitext(%s)[1])", functions->var_name, path, path);
-			fprintf(file, "%s.save(\"%s\")", functions->var_name, functions->var_name);
+			// fprintf(file, "%s.save(os.path.dirname(%s) + \"output.png\")", functions->var_name, path);
+			fprintf(file, "%s.save(\"output.png\")", functions->var_name);
 			break;
 	}
 	fprintf(file, "\n");
