@@ -13,10 +13,18 @@ Un compilador construido con Flex y Bison, en el marco de la materia Autómatas,
 
 ## Requerimientos
 
-Para construir el compilador, se requiere tener instalado [Docker](https://docs.docker.com/engine/install/), junto con la imagen de compilación:
+Para construir el compilador, se requiere tener instalado [Docker](https://docs.docker.com/engine/install/), junto con la imagen de compilación.
+
+Dicha imagen se puede descargar de Docker Hub con el siguiente comando:
 
 ```Bash
 $ docker pull alejofl/tla-compiler
+```
+
+Alternativamente, se puede crear la imagen necesaria utilizando el archivo `Dockerfile`:
+
+```Bash
+$ docker build -t compiler .
 ```
 
 ## Construcción

@@ -516,7 +516,7 @@ FodyWeavers.xsd
 # Docker-related files
 .bashrc
 .bash_history
-Dockerfile
+.viminfo
 
 # Project specific:
 bison-parser.c
@@ -528,5 +528,7 @@ cache/
 log/
 obj/
 node_modules/
-
-.viminfo
+imgine_generator.py
+*.jpg
+*.png
+*.jpeg

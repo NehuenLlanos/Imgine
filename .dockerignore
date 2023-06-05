@@ -1,0 +1,10 @@
+# Bash files
+.bashrc
+.bash_history
+.viminfo
+
+README.md
+LICENSE.md
+.gitignore
+extension
+.vscode
