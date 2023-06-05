@@ -28,30 +28,27 @@ FILE * file;
 void Generate(Program program) {
 	file = fopen(SOURCE_FILENAME, "w");
 
-	fprintf(file, "from PIL import Image, ImageEnhance, ImageFilter\nimport numpy as np\nimport os\n\nclass Filter:\n\tblack_threshold = 100\n\n\tdef __init__(self):\n\t\tself.filters = {\n\t\t\t\"exposure\": None,\n\t\t\t\"luminosity\": None,\n\t\t\t\"shadows\": None,\n\t\t\t\"contrast\": None,\n\t\t\t\"brightness\": None,\n\t\t\t\"saturation\": None,\n\t\t\t\"opacity\": None\n\t\t}\n\n\tdef add(self, filter, factor):\n\t\tself.filters[filter] = factor\n\t\treturn self\n\n\tdef apply(self, image):\n\t\tif self.filters.get(\"exposure\") is not None:\n\t\t\tprint(\"exposure\")\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"exposure\"))\n\n\t\tif self.filters.get(\"luminosity\") is not None:\n\t\t\tprint(\"luminosity\")\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"luminosity\"))\n\n\t\tif self.filters.get(\"shadows\") is not None:\n\t\t\tprint(\"shadows\")\n\t\t\timage_array = np.array(image)\n\t\t\tfor row in image_array:\n\t\t\t\tfor pixel in row:\n\t\t\t\t\tif (0.2989 * pixel[0]) + (0.5870 * pixel[1]) + (0.1140 * pixel[2]) <= self.black_threshold:\n\t\t\t\t\t\tfactor_aux = self.filters.get(\"shadows\") - 1\n\t\t\t\t\t\tif pixel[0] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[0] = 255\n\t\t\t\t\t\telif pixel[0] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[0] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[0] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[1] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[1] = 255\n\t\t\t\t\t\telif pixel[1] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[1] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[1] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[2] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[2] = 255\n\t\t\t\t\t\telif pixel[2] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[2] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[2] += 100 * factor_aux\n\t\t\timage = Image.fromarray(image_array)\n\n\t\tif self.filters.get(\"contrast\") is not None:\n\t\t\tprint(\"contrast\")\n\t\t\timage = ImageEnhance.Contrast(image).enhance(self.filters.get(\"contrast\"))\n\n\t\tif self.filters.get(\"brightness\") is not None:\n\t\t\tprint(\"brightness\")\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"brightness\"))\n\n\t\tif self.filters.get(\"saturation\") is not None:\n\t\t\tprint(\"saturation\")\n\t\t\timage = ImageEnhance.Color(image).enhance(self.filters.get(\"saturation\"))\n\n\t\tif self.filters.get(\"opacity\") is not None:\n\t\t\tprint(\"opacity\")\n\t\t\tfactor = self.filters.get(\"opacity\")\n\t\t\topacity = factor if factor <= 1 else 1\n\t\t\timage = image.convert(\"RGBA\")\n\t\t\talpha = image.split()[3]\n\t\t\talpha = alpha.point(lambda p: p * opacity)\n\t\t\timage.putalpha(alpha)\n\t\t\n\t\treturn image\n\nclass NamedFilter:\n\tdef __init__(self, filter):\n\t\tself.filter = filter\n\n\tdef apply(self, image):\n\t\timage = image.filter(self.filter)\n\t\treturn image\n\n");
+	fprintf(file, "from PIL import Image, ImageEnhance, ImageFilter\nimport numpy as np\nimport os\n\nclass Filter:\n\tblack_threshold = 100\n\n\tdef __init__(self):\n\t\tself.filters = {\n\t\t\t\"exposure\": None,\n\t\t\t\"luminosity\": None,\n\t\t\t\"shadows\": None,\n\t\t\t\"contrast\": None,\n\t\t\t\"brightness\": None,\n\t\t\t\"saturation\": None,\n\t\t\t\"opacity\": None\n\t\t}\n\n\tdef add(self, filter, factor):\n\t\tself.filters[filter] = factor\n\t\treturn self\n\n\tdef apply(self, image):\n\t\tif self.filters.get(\"exposure\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"exposure\"))\n\n\t\tif self.filters.get(\"luminosity\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"luminosity\"))\n\n\t\tif self.filters.get(\"shadows\") is not None:\n\t\t\timage_array = np.array(image)\n\t\t\tfor row in image_array:\n\t\t\t\tfor pixel in row:\n\t\t\t\t\tif (0.2989 * pixel[0]) + (0.5870 * pixel[1]) + (0.1140 * pixel[2]) <= self.black_threshold:\n\t\t\t\t\t\tfactor_aux = self.filters.get(\"shadows\") - 1\n\t\t\t\t\t\tif pixel[0] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[0] = 255\n\t\t\t\t\t\telif pixel[0] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[0] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[0] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[1] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[1] = 255\n\t\t\t\t\t\telif pixel[1] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[1] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[1] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[2] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[2] = 255\n\t\t\t\t\t\telif pixel[2] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[2] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[2] += 100 * factor_aux\n\t\t\timage = Image.fromarray(image_array)\n\n\t\tif self.filters.get(\"contrast\") is not None:\n\t\t\timage = ImageEnhance.Contrast(image).enhance(self.filters.get(\"contrast\"))\n\n\t\tif self.filters.get(\"brightness\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"brightness\"))\n\n\t\tif self.filters.get(\"saturation\") is not None:\n\t\t\timage = ImageEnhance.Color(image).enhance(self.filters.get(\"saturation\"))\n\n\t\tif self.filters.get(\"opacity\") is not None:\n\t\t\tfactor = self.filters.get(\"opacity\")\n\t\t\topacity = factor if factor <= 1 else 1\n\t\t\timage = image.convert(\"RGBA\")\n\t\t\talpha = image.split()[3]\n\t\t\talpha = alpha.point(lambda p: p * opacity)\n\t\t\timage.putalpha(alpha)\n\t\t\n\t\treturn image\n\nclass NamedFilter:\n\tdef __init__(self, filter):\n\t\tself.filter = filter\n\n\tdef apply(self, image):\n\t\timage = image.filter(self.filter)\n\t\treturn image\n\n");
 
 	GenerateExpression(program->expression);
 
 	fclose(file);
 
-	int status;
 	pid_t pid = fork();
-
 	if (pid == 0) {
-		printf("Entre gil");
 		char * args[] = {"/usr/bin/python3", SOURCE_FILENAME, NULL};
 		execv(args[0], args);
 	} else if (pid == -1) {
-		LogError("Error al forkear");
+		LogError("Error al crear proceso para generar imágenes.");
 	} else {
+		int status;
 		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status)){
-			printf("Error\n");
+		if (WIFSIGNALED(status)) {
+			LogError("Error al generar las imágenes con Python.");
 		}
-		else if (WEXITSTATUS(status)){
-			printf("Exited Normally\n");
+		else if (WEXITSTATUS(status) == 0) {
+			LogInfo("Imágenes generadas.");
 		}
-
 	}
 }
 
