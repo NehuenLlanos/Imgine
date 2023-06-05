@@ -42,6 +42,7 @@ void Generate(Program program) {
 		LogError("Error al crear proceso para generar imágenes.");
 	} else {
 		int status;
+		LogInfo("Generando imágenes.");
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status)) {
 			LogError("Error al generar las imágenes con Python.");
