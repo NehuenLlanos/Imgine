@@ -69,6 +69,8 @@ add_executable(Compiler
 	src/frontend/syntactic-analysis/bison-parser.c
 	# Agregar otros archivos *.c (si no se incluyen, no se compilan).
 	src/backend/support/garbage-collector.c
+	src/backend/semantic-analysis/symbol-table.c
+	src/backend/support/utils.c
 )
 
 # Linkear el proyecto y sus librerías.

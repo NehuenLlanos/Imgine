@@ -1,10 +1,11 @@
-#include "../../backend/domain-specific/calculator.h"
-#include "../../backend/support/logger.h"
-#include "../../backend/support/garbage-collector.h"
-#include "bison-actions.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "../../backend/support/logger.h"
+#include "../../backend/support/utils.h"
+#include "../../backend/support/garbage-collector.h"
+#include "../../backend/semantic-analysis/symbol-table.h"
+#include "bison-actions.h"
 
 /**
  * Implementación de "bison-grammar.h".
@@ -175,6 +176,11 @@ Imagevar ImagevarVarnameGrammarAction(char * varname) {
 	new_guy->type = IMAGEVARTYPE_VAR_NAME;
 	new_guy->var_name = varname;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -185,6 +191,21 @@ Imagedef ImagedefGrammarAction(char * varname, Imagevar imagevar) {
 	new_guy->var_name = varname;
 	new_guy->imagevar = imagevar;
 
+	if (SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Redefinicion");
+	} else {
+		switch (imagevar->type) {
+			case IMAGEVARTYPE_VAR_NAME:
+				Symbol variable = GetFromSymbolTable(imagevar->var_name);
+				InsertInSymbolTable(varname, VARTYPE_IMAGE, variable->path);
+				break;
+			case IMAGEVARTYPE_PATH:
+				InsertInSymbolTable(varname, VARTYPE_IMAGE, imagevar->path);
+				break;
+		}
+	}
+
 	return new_guy;
 }
 
@@ -193,7 +214,21 @@ Filtervar FiltervarParanthesisGrammarAction(char * filtername) {
 
 	Filtervar new_guy = Malloc(sizeof(struct FiltervarNode));
 	new_guy->type = FILTERVARTYPE_FILTER_NAME;
-	new_guy->filter_name = filtername;
+	new_guy->filter_name = to_upper(filtername);
+
+	if (!(strcmp(filtername, "BLUR") == 0 || 
+		  strcmp(filtername, "CONTOUR") == 0 || 
+		  strcmp(filtername, "DETAIL") == 0 ||
+		  strcmp(filtername, "EDGE_ENHANCE") == 0 || 
+		  strcmp(filtername, "EDGE_ENHANCE_MORE") == 0 || 
+		  strcmp(filtername, "EMBOSS") == 0 ||
+		  strcmp(filtername, "FIND_EDGES") == 0 ||
+		  strcmp(filtername, "SHARPEN") == 0 || 
+		  strcmp(filtername, "SMOOTH") == 0 ||
+		  strcmp(filtername, "SMOOTH_MORE") == 0)) {
+		// TODO Error Handling
+		LogError("ERROR. Filtro predefinido no existe");
+	}
 
 	return new_guy;
 }
@@ -215,6 +250,11 @@ Filtervar FilterVarnameGrammarAction(char * varname) {
 	new_guy->type = FILTERVARTYPE_VAR_NAME;
 	new_guy->var_name = varname;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -224,6 +264,13 @@ Filterdef FilterdefGrammarAction(char * varname, Filtervar filtervar) {
 	Filterdef new_guy = Malloc(sizeof(struct FilterdefNode));
 	new_guy->var_name = varname;
 	new_guy->filtervar = filtervar;
+
+	if (SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Redefinicion");
+	} else {
+		InsertInSymbolTable(varname, VARTYPE_FILTER, NULL);
+	}
 
 	return new_guy;
 }
@@ -331,6 +378,11 @@ Setvar SetvarVarnameGrammarAction(char * varname) {
 	new_guy->type = SETVARTYPE_VAR_NAME;
 	new_guy->var_name = varname;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -340,6 +392,13 @@ Setdef SetdefGrammarAction(char * varname, Setvar setvar) {
 	Setdef new_guy = Malloc(sizeof(struct SetdefNode));
 	new_guy->var_name = varname;
 	new_guy->setvar = setvar;
+
+	if (SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Redefinicion");
+	} else {
+		InsertInSymbolTable(varname, VARTYPE_SET, NULL);
+	}
 
 	return new_guy;
 }
@@ -365,11 +424,27 @@ Images ImagesRecursiveGrammarAction(Imagevar imagevar, Images images) {
 	return new_guy;	
 }
 
-Fordef FordefGrammarAction(char * varname, Setvar setvar, Block block) {
-	LogDebug("\tFordefGrammarAction(%s, %p, %p)", varname, setvar, block);
+Forvar ForvarGrammarAction(char * varname) {
+	LogDebug("\tForvarGrammarAction(%s)", varname);
+
+	Forvar new_guy = Malloc(sizeof(struct ForvarNode));
+	new_guy->var_name = varname;
+
+	if (SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Redefinicion");
+	} else {
+		InsertInSymbolTable(varname, VARTYPE_FOR_IMAGE, NULL);
+	}
+
+	return new_guy;
+}
+
+Fordef FordefGrammarAction(Forvar forvar, Setvar setvar, Block block) {
+	LogDebug("\tFordefGrammarAction(%p, %p, %p)", forvar, setvar, block);
 	
 	Fordef new_guy = Malloc(sizeof(struct FordefNode));
-	new_guy->var_name = varname;
+	new_guy->forvar = forvar;
 	new_guy->setvar = setvar;
 	new_guy->block = block;
 
@@ -405,6 +480,11 @@ Functions ApplyFiltersGrammarAction(char * varname, Filters filters) {
 	new_guy->var_name = varname;
 	new_guy->filters = filters;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -416,6 +496,11 @@ Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Position
 	new_guy->var_name = varname;
 	new_guy->imagevar = imagevar;
 	new_guy->position = position;
+
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
 
 	return new_guy;
 }
@@ -429,6 +514,11 @@ Functions ResizeImageGrammarAction(char * varname, float width, float height) {
 	new_guy->width = width;
 	new_guy->height = height;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -440,6 +530,11 @@ Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axi
 	new_guy->var_name = varname;
 	new_guy->imagevar = imagevar;
 	new_guy->axis = axis;
+
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
 
 	return new_guy;
 }
@@ -454,6 +549,11 @@ Functions TrimImageGrammarAction(char * varname, float width, float height, Posi
 	new_guy->height = height;
 	new_guy->position = position;
 
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
+
 	return new_guy;
 }
 
@@ -463,6 +563,11 @@ Functions SaveGrammarAction(char * varname) {
 	Functions new_guy = Malloc(sizeof(struct FunctionsNode));
 	new_guy->type = FUNCTIONSTYPE_SAVE;
 	new_guy->var_name = varname;
+
+	if (!SymbolTableContains(varname)) {
+		// TODO Error Handling
+		LogError("ERROR. Variable no definida");
+	}
 
 	return new_guy;
 }

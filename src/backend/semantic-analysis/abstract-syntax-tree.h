@@ -13,6 +13,7 @@ typedef struct PropertiesNode * Properties;
 typedef struct SetvarNode * Setvar;
 typedef struct SetdefNode * Setdef;
 typedef struct ImagesNode * Images;
+typedef struct ForvarNode * Forvar;
 typedef struct FordefNode * Fordef;
 typedef struct BlockNode * Block;
 typedef struct FunctionsNode * Functions;
@@ -148,8 +149,12 @@ struct ImagesNode {
 	Images images;
 };
 
-struct FordefNode {
+struct ForvarNode {
 	char * var_name;
+};
+
+struct FordefNode {
+	Forvar forvar;
 	Setvar setvar;
 	Block block;
 };

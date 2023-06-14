@@ -19,6 +19,7 @@
 	Setvar setvar;
 	Setdef setdef;
 	Images images;
+	Forvar forvar;
 	Fordef fordef;
 	Block block;
 	Functions functions;
@@ -94,6 +95,7 @@
 %type <setvar> setvar;
 %type <setdef> setdef;
 %type <images> images;
+%type <forvar> forvar;
 %type <fordef> fordef;
 %type <block> block;
 %type <functions> functions;
@@ -166,7 +168,10 @@ images: imagevar 																				{ $$ = ImagesGrammarAction($1); }
 	| imagevar COMMA images 																	{ $$ = ImagesRecursiveGrammarAction($1, $3); }
 	;	
 
-fordef: FOR VAR_NAME IN setvar OPEN_CURLY_BRACE block CLOSE_CURLY_BRACE 						{ $$ = FordefGrammarAction($2, $4, $6); }
+fordef: FOR forvar IN setvar OPEN_CURLY_BRACE block CLOSE_CURLY_BRACE 							{ $$ = FordefGrammarAction($2, $4, $6); }
+	;
+
+forvar: VAR_NAME																				{ $$ = ForvarGrammarAction($1); }
 	;
 
 block: functions 																				{ $$ = BlockGrammarAction($1); }

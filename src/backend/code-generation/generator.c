@@ -4,6 +4,7 @@
 #include <string.h>
 #include "../support/logger.h"
 #include "../support/garbage-collector.h"
+#include "../semantic-analysis/symbol-table.h"
 #include "generator.h"
 
 #define SOURCE_FILENAME "imgine_generator.py"
@@ -25,7 +26,12 @@ void GenerateFilters(Filters filters, char * image);
 
 FILE * file;
 
+int for_count = 0;
+int images_inside_for_count = 0;
+
 void Generate(Program program) {
+	LogDebug("GenerateProgram");
+
 	file = fopen(SOURCE_FILENAME, "w");
 
 	fprintf(file, "from PIL import Image, ImageEnhance, ImageFilter\nimport numpy as np\nimport os\n\nclass Filter:\n\tblack_threshold = 100\n\n\tdef __init__(self):\n\t\tself.filters = {\n\t\t\t\"exposure\": None,\n\t\t\t\"luminosity\": None,\n\t\t\t\"shadows\": None,\n\t\t\t\"contrast\": None,\n\t\t\t\"brightness\": None,\n\t\t\t\"saturation\": None,\n\t\t\t\"opacity\": None\n\t\t}\n\n\tdef add(self, filter, factor):\n\t\tself.filters[filter] = factor\n\t\treturn self\n\n\tdef apply(self, image):\n\t\tif self.filters.get(\"exposure\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"exposure\"))\n\n\t\tif self.filters.get(\"luminosity\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"luminosity\"))\n\n\t\tif self.filters.get(\"shadows\") is not None:\n\t\t\timage_array = np.array(image)\n\t\t\tfor row in image_array:\n\t\t\t\tfor pixel in row:\n\t\t\t\t\tif (0.2989 * pixel[0]) + (0.5870 * pixel[1]) + (0.1140 * pixel[2]) <= self.black_threshold:\n\t\t\t\t\t\tfactor_aux = self.filters.get(\"shadows\") - 1\n\t\t\t\t\t\tif pixel[0] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[0] = 255\n\t\t\t\t\t\telif pixel[0] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[0] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[0] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[1] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[1] = 255\n\t\t\t\t\t\telif pixel[1] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[1] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[1] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[2] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[2] = 255\n\t\t\t\t\t\telif pixel[2] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[2] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[2] += 100 * factor_aux\n\t\t\timage = Image.fromarray(image_array)\n\n\t\tif self.filters.get(\"contrast\") is not None:\n\t\t\timage = ImageEnhance.Contrast(image).enhance(self.filters.get(\"contrast\"))\n\n\t\tif self.filters.get(\"brightness\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"brightness\"))\n\n\t\tif self.filters.get(\"saturation\") is not None:\n\t\t\timage = ImageEnhance.Color(image).enhance(self.filters.get(\"saturation\"))\n\n\t\tif self.filters.get(\"opacity\") is not None:\n\t\t\tfactor = self.filters.get(\"opacity\")\n\t\t\topacity = factor if factor <= 1 else 1\n\t\t\timage = image.convert(\"RGBA\")\n\t\t\talpha = image.split()[3]\n\t\t\talpha = alpha.point(lambda p: p * opacity)\n\t\t\timage.putalpha(alpha)\n\t\t\n\t\treturn image\n\nclass NamedFilter:\n\tdef __init__(self, filter):\n\t\tself.filter = filter\n\n\tdef apply(self, image):\n\t\timage = image.filter(self.filter)\n\t\treturn image\n\n");
@@ -54,6 +60,8 @@ void Generate(Program program) {
 }
 
 void GenerateExpression(Expression expression) {
+	LogDebug("GenerateExpression");
+
 	switch (expression->type) {
 		case EXPRESSIONTYPE_IMAGEDEF:
 			GenerateImagedef(expression->imagedef);
@@ -75,6 +83,8 @@ void GenerateExpression(Expression expression) {
 }
 
 void GenerateSentence(Sentence sentence) {
+	LogDebug("GenerateSentence");
+
 	switch (sentence->type) {
 		case SENTENCETYPE_IMAGEDEF:
 			GenerateImagedef(sentence->imagedef);
@@ -100,6 +110,8 @@ void GenerateSentence(Sentence sentence) {
 }
 
 char * GenerateImagevar(Imagevar imagevar) {
+	LogDebug("GenerateImagevar");
+
 	char * answer;
 	switch (imagevar->type) {
 		case IMAGEVARTYPE_PATH:
@@ -119,10 +131,14 @@ char * GenerateImagevar(Imagevar imagevar) {
 }
 
 void GenerateImagedef(Imagedef imagedef) {
+	LogDebug("GenerateImagedef");
+
 	fprintf(file, "%s = %s\n", imagedef->var_name, GenerateImagevar(imagedef->imagevar));
 }
 
 void GenerateFiltervar(Filtervar filtervar) {
+	LogDebug("GenerateFiltervar");
+
 	switch (filtervar->type) {
 		case FILTERVARTYPE_PARAMETERSDEF:
 			fprintf(file, "Filter()");
@@ -138,12 +154,16 @@ void GenerateFiltervar(Filtervar filtervar) {
 }
 
 void GenerateFilterdef(Filterdef filterdef) {
+	LogDebug("GenerateFilterdef");
+
 	fprintf(file, "%s = ", filterdef->var_name);
 	GenerateFiltervar(filterdef->filtervar);
 	fprintf(file, "\n");
 }
 
 void GenerateParameter(Property property, float value) {
+	LogDebug("GenerateParameter");
+
 	char property_str[11] = "";
 	switch (property) {
 		case PROPERTY_EXPOSURE:
@@ -172,6 +192,8 @@ void GenerateParameter(Property property, float value) {
 }
 
 void GenerateParametersdef(Parametersdef parametersdef) {
+	LogDebug("GenerateParametersdef");
+
 	switch (parametersdef->type) {
 		case PARAMETERSDEFTYPE_PARAMETER:
 			GenerateParameter(parametersdef->property->property, parametersdef->value);
@@ -184,6 +206,8 @@ void GenerateParametersdef(Parametersdef parametersdef) {
 }
 
 void GenerateSetvar(Setvar setvar) {
+	LogDebug("GenerateSetvar");
+
 	switch (setvar->type) {
 		case SETVARTYPE_VAR_NAME:
 			fprintf(file, "%s", setvar->var_name);
@@ -197,12 +221,16 @@ void GenerateSetvar(Setvar setvar) {
 }
 
 void GenerateSetdef(Setdef setdef) {
+	LogDebug("GenerateSetdef");
+
 	fprintf(file, "%s = ", setdef->var_name);
 	GenerateSetvar(setdef->setvar);
 	fprintf(file, "\n");
 }
 
 void GenerateImages(Images images) {
+	LogDebug("GenerateImages");
+
 	switch (images->type) {
 		case IMAGESTYPE_SINGLE:
 			fprintf(file, "%s", GenerateImagevar(images->imagevar));
@@ -215,13 +243,19 @@ void GenerateImages(Images images) {
 }
 
 void GenerateFordef(Fordef fordef) {
-	fprintf(file, "for %s in ", fordef->var_name);
+	LogDebug("GenerateFordef");
+
+	for_count++;
+	fprintf(file, "for %s in ", fordef->forvar->var_name);
 	GenerateSetvar(fordef->setvar);
 	fprintf(file, ":\n");
 	GenerateBlock(fordef->block);
+	images_inside_for_count = 0;
 }
 
 void GenerateBlock(Block block) {
+	LogDebug("GenerateBlock");
+
 	switch (block->type) {
 		case BLOCKTYPE_SINGLE:
 			fprintf(file, "\t");
@@ -236,6 +270,8 @@ void GenerateBlock(Block block) {
 }
 
 void GenerateFunctions(Functions functions) {
+	LogDebug("GenerateFunctions");
+
 	char * imagevar;
 	switch (functions->type) {
 		case FUNCTIONSTYPE_APPLY_FILTERS:
@@ -323,16 +359,29 @@ void GenerateFunctions(Functions functions) {
 			fprintf(file, "))");
 			break;
 		case FUNCTIONSTYPE_SAVE:
-			// FIXME tabla de simbolos -> el path se obtiene de ahi
-			// char path[] = "path";
-			// fprintf(file, "%s.save(os.path.dirname(%s) + \"output.png\")", functions->var_name, path);
-			fprintf(file, "%s.save(\"output.png\")", functions->var_name);
+			LogDebug("Llego a save");
+			Symbol image = GetFromSymbolTable(functions->var_name);
+			LogDebug("Busco en la tabla");
+			if (image->type == VARTYPE_IMAGE) {
+				LogDebug("Entro al var image");
+				fprintf(file, "%s.save(os.path.join(\".\", \"imgine_output\", os.path.splitext(os.path.basename(\"%s\"))[0] + \".png\"))", functions->var_name, image->path);
+				LogDebug("Imprimo");
+			} else if (image->type == VARTYPE_FOR_IMAGE) {
+				LogDebug("Entro al for image");
+				images_inside_for_count++;
+				LogDebug("Sumo a la variable");
+				fprintf(file, "%s.save(os.path.join(\".\", \"imgine_output\", \"bulk_edit_%u\", \"%u\" + \".png\"))", functions->var_name, for_count, images_inside_for_count);
+				LogDebug("Imprimo");
+			}
+			LogDebug("Salgo de save");
 			break;
 	}
 	fprintf(file, "\n");
 }
 
 void GenerateFilters(Filters filters, char * image) {
+	LogDebug("GenerateFilters");
+
 	switch (filters->type) {
 		case FILTERSTYPE_SINGLE:
 			fprintf(file, "%s = ", image);

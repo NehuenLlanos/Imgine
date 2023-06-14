@@ -1,8 +1,9 @@
+#include <stdlib.h>
+#include <string.h>
+#include "../../backend/semantic-analysis/symbol-table.h"
 #include "../../backend/support/logger.h"
 #include "../../backend/support/garbage-collector.h"
 #include "flex-actions.h"
-#include <stdlib.h>
-#include <string.h>
 
 /**
  * Implementación de "flex-actions.h".
@@ -40,6 +41,7 @@ token SetPatternAction(const char * lexeme) {
 
 token ForPatternAction(const char * lexeme) {
 	LogDebug("ForPatternAction: '%s'.", lexeme);
+	StepIntoScope();
 	yylval.token = FOR;
 	return FOR;
 }
@@ -94,6 +96,7 @@ token OpenCurlyBracePatternAction(const char * lexeme) {
 
 token CloseCurlyBracePatternAction(const char * lexeme) {
 	LogDebug("CloseCurlyBracePatternAction: '%s'.", lexeme);
+	LeaveScope();
 	yylval.token = CLOSE_CURLY_BRACE;
 	return CLOSE_CURLY_BRACE;
 }

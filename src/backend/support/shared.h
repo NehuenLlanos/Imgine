@@ -40,17 +40,8 @@ typedef int token;
 
 // Estado global de toda la aplicación.
 typedef struct {
-	// Indica si la compilación tuvo problemas hasta el momento.
 	boolean succeed;
-
-	// El nodo raíz del AST (se usará cuando se implemente el backend).
 	Program program;
-
-	// Agregar lo que sea necesario para el compilador.
-	// Agregar una pila para manipular scopes.
-	// Agregar una tabla de símbolos.
-	// ...
-
 } CompilerState;
 
 // El estado se define e inicializa en el archivo "main.c".

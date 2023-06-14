@@ -56,7 +56,8 @@ Setdef SetdefGrammarAction(char * varname, Setvar setvar);
 Images ImagesGrammarAction(Imagevar imagevar);
 Images ImagesRecursiveGrammarAction(Imagevar imagevar, Images images);
 
-Fordef FordefGrammarAction(char * varname, Setvar setvar, Block block);
+Forvar ForvarGrammarAction(char * varname);
+Fordef FordefGrammarAction(Forvar forvar, Setvar setvar, Block block);
 
 Block BlockGrammarAction(Functions functions);
 Block BlockRecursiveGrammarAction(Functions functions, Block block);
