@@ -40,6 +40,10 @@ void Generate(Program program) {
 
 	fclose(file);
 
+	if (!state.generate_images) {
+		return;
+	}
+
 	pid_t pid = fork();
 	if (pid == 0) {
 		char * args[] = {"/usr/bin/python3", SOURCE_FILENAME, NULL};
@@ -48,13 +52,13 @@ void Generate(Program program) {
 		LogError("Error al crear proceso para generar imágenes.");
 	} else {
 		int status;
-		LogInfo("Generando imágenes.");
+		LogInfo("Generando imágenes...");
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status)) {
-			LogError("Error al generar las imágenes con Python.");
+			LogError("Error al generar las imágenes con Python");
 		}
 		else if (WEXITSTATUS(status) == 0) {
-			LogInfo("Imágenes generadas.");
+			LogInfo("Imágenes generadas");
 		}
 	}
 }

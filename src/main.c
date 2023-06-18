@@ -4,6 +4,7 @@
 #include "backend/support/garbage-collector.h"
 #include "frontend/syntactic-analysis/bison-parser.h"
 #include <stdio.h>
+#include <string.h>
 
 // Estado de la aplicación.
 CompilerState state;
@@ -16,6 +17,17 @@ const int main(const int argumentCount, const char ** arguments) {
 	state.last_error = NULL;
 	state.error_count = 0;
 	state.succeed = false;
+	state.generate_images = false;
+
+	// Verificar si se deben generar las imágenes
+	if (argumentCount == 2 && strcmp(arguments[1], "-g") == 0) {
+		state.generate_images = true;
+    } else if (argumentCount > 2) {
+		LogError("Argumentos Invalidos. Uso: ./script/start.sh [-g] path/a/archivo.imgine");
+		return -1;
+	}
+
+    
 
 	// Mostrar parámetros recibidos por consola.
 	for (int i = 0; i < argumentCount; ++i) {

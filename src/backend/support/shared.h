@@ -54,6 +54,7 @@ typedef struct {
 	ErrorList last_error;
 	unsigned int error_count;
 	Program program;
+	boolean generate_images;
 } CompilerState;
 
 // El estado se define e inicializa en el archivo "main.c".
