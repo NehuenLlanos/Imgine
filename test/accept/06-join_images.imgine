@@ -1,0 +1,9 @@
+image image1 = image("path");
+image image2 = image("other/path");
+image image3 = image("other/other/path");
+
+image1.union(image2, axis=y);
+image1.save();
+
+image2.union(image3, axis=y);
+image2.save();

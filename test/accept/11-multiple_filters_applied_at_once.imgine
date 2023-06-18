@@ -1,11 +1,13 @@
 // Declaración de la variable my_image
 image my_image = image("path/to/image.png");
 
-// Definimos el filtro a utilizar
-filter grayscale = filter("grayscale");
+// Definimos los filtros a utilizar
+filter blur = filter("BLUR");
+filter smooth = filter("SMOOTH");
+filter contour = filter("CONTOUR");
 
 // Aplicamos el filtro
-my_image.apply(grayscale);
+my_image.apply(blur, smooth, contour);
 
 // Redimensión de la imagen
 my_image.resize(width=350.0, height=520.0);

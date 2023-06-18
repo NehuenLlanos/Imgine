@@ -1,9 +1,0 @@
-image image1 = image("path");
-
-filter f = filter("random string");
-
-for im in set(image1, image("path2"), image("path3")) {
-    im.apply(f);
-    im.union(image1, axis=y);
-    im.save();
-}

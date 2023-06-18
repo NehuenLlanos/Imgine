@@ -1,0 +1,13 @@
+// Wrong type
+
+image image1 = image("input_image.jpg");
+
+filter f = filter("BLUR");
+filter j = filter().parameter(shadows=0.6);
+
+f.save();
+
+for im1 in set(j, image("input_image_2.jpg"), image("input_image_3.png")) {
+    im1.apply(f, j, image1);
+    im1.save();
+}

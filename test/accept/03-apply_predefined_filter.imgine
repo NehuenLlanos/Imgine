@@ -1,0 +1,4 @@
+image my_image = image("path/to/image.png");
+filter the_filter = filter("BLUR");
+my_image.apply(the_filter);
+my_image.save();

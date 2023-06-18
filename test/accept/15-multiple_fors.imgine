@@ -1,0 +1,21 @@
+image image1 = image("input_image.jpg");
+
+filter f = filter("BLUR");
+filter j = filter().parameter(shadows=0.6);
+
+image1.save();
+
+for im1 in set(image1, image("input_image_2.jpg"), image("input_image_3.png")) {
+    im1.apply(f, j);
+    im1.save();
+}
+
+for im2 in set(image1, image("input_image_2.jpg"), image("input_image_3.png")) {
+    im2.resize(width=100.0, height=100.0);
+    im2.save();
+}
+
+for im3 in set(image1, image("input_image_2.jpg"), image("input_image_3.png")) {
+    im3.union(image1, axis=x);
+    im3.save();
+}

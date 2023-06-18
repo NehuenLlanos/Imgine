@@ -1,4 +1,4 @@
-// This program should not work in the future
+// Undefined variable
 
 image watermark = image("path/to/watermark.png");
 image image_1 = image("path/to/image_1.jpg");
