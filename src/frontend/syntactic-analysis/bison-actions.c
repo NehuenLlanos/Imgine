@@ -170,7 +170,7 @@ Imagevar ImagevarParenthesisGrammarAction(char * path) {
 }
 
 Imagevar ImagevarVarnameGrammarAction(char * varname) {
-	LogDebug("\tmagevarVarnameGrammarAction(%s)", varname);
+	LogDebug("\tImagevarVarnameGrammarAction(%s)", varname);
 
 	Imagevar new_guy = Malloc(sizeof(struct ImagevarNode));
 	new_guy->type = IMAGEVARTYPE_VAR_NAME;

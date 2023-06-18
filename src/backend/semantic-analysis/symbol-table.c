@@ -64,8 +64,6 @@ void DeleteFromSymbolTable(char * key) {
 
 Symbol GetFromSymbolTable(char * key) {
     SymbolObject current = table[hash_code(key)];
-    SymbolObject prev = NULL;
-
     while (current != NULL) {
         if (strcmp(current->key, key) == 0) {
             Symbol new_symbol = Malloc(sizeof(struct SymbolNode));
@@ -111,27 +109,5 @@ void StepIntoScope() {
 }
 
 void LeaveScope() {
-    for (int i = 0; i < HASH_TABLE_SIZE; i++) {
-        if (table[i] != NULL) {
-            SymbolObject current = table[i];
-            SymbolObject prev = NULL;
-            while (current != NULL) {
-                if (current->scope == scope) {
-                    if (prev == NULL) {
-                        SymbolObject to_delete = current;
-                        table[i] = current->next;
-                        current = table[i];
-                        Free(to_delete);
-                    } else {
-                        prev->next = current->next;
-                        Free(current);
-                        current = prev->next;
-                    }
-                } else {
-                    current = current->next;
-                }
-            }
-        }
-    }
     scope--;
 }

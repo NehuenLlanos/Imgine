@@ -34,7 +34,7 @@ void Generate(Program program) {
 
 	file = fopen(SOURCE_FILENAME, "w");
 
-	fprintf(file, "from PIL import Image, ImageEnhance, ImageFilter\nimport numpy as np\nimport os\n\nclass Filter:\n\tblack_threshold = 100\n\n\tdef __init__(self):\n\t\tself.filters = {\n\t\t\t\"exposure\": None,\n\t\t\t\"luminosity\": None,\n\t\t\t\"shadows\": None,\n\t\t\t\"contrast\": None,\n\t\t\t\"brightness\": None,\n\t\t\t\"saturation\": None,\n\t\t\t\"opacity\": None\n\t\t}\n\n\tdef add(self, filter, factor):\n\t\tself.filters[filter] = factor\n\t\treturn self\n\n\tdef apply(self, image):\n\t\tif self.filters.get(\"exposure\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"exposure\"))\n\n\t\tif self.filters.get(\"luminosity\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"luminosity\"))\n\n\t\tif self.filters.get(\"shadows\") is not None:\n\t\t\timage_array = np.array(image)\n\t\t\tfor row in image_array:\n\t\t\t\tfor pixel in row:\n\t\t\t\t\tif (0.2989 * pixel[0]) + (0.5870 * pixel[1]) + (0.1140 * pixel[2]) <= self.black_threshold:\n\t\t\t\t\t\tfactor_aux = self.filters.get(\"shadows\") - 1\n\t\t\t\t\t\tif pixel[0] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[0] = 255\n\t\t\t\t\t\telif pixel[0] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[0] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[0] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[1] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[1] = 255\n\t\t\t\t\t\telif pixel[1] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[1] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[1] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[2] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[2] = 255\n\t\t\t\t\t\telif pixel[2] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[2] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[2] += 100 * factor_aux\n\t\t\timage = Image.fromarray(image_array)\n\n\t\tif self.filters.get(\"contrast\") is not None:\n\t\t\timage = ImageEnhance.Contrast(image).enhance(self.filters.get(\"contrast\"))\n\n\t\tif self.filters.get(\"brightness\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"brightness\"))\n\n\t\tif self.filters.get(\"saturation\") is not None:\n\t\t\timage = ImageEnhance.Color(image).enhance(self.filters.get(\"saturation\"))\n\n\t\tif self.filters.get(\"opacity\") is not None:\n\t\t\tfactor = self.filters.get(\"opacity\")\n\t\t\topacity = factor if factor <= 1 else 1\n\t\t\timage = image.convert(\"RGBA\")\n\t\t\talpha = image.split()[3]\n\t\t\talpha = alpha.point(lambda p: p * opacity)\n\t\t\timage.putalpha(alpha)\n\t\t\n\t\treturn image\n\nclass NamedFilter:\n\tdef __init__(self, filter):\n\t\tself.filter = filter\n\n\tdef apply(self, image):\n\t\timage = image.filter(self.filter)\n\t\treturn image\n\n");
+	fprintf(file, "from PIL import Image, ImageEnhance, ImageFilter\nimport numpy as np\nimport os\n\nclass Filter:\n\tblack_threshold = 100\n\n\tdef __init__(self):\n\t\tself.filters = {\n\t\t\t\"exposure\": None,\n\t\t\t\"luminosity\": None,\n\t\t\t\"shadows\": None,\n\t\t\t\"contrast\": None,\n\t\t\t\"brightness\": None,\n\t\t\t\"saturation\": None,\n\t\t\t\"opacity\": None\n\t\t}\n\n\tdef add(self, filter, factor):\n\t\tself.filters[filter] = factor\n\t\treturn self\n\n\tdef apply(self, image):\n\t\tif self.filters.get(\"exposure\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"exposure\"))\n\n\t\tif self.filters.get(\"luminosity\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"luminosity\"))\n\n\t\tif self.filters.get(\"shadows\") is not None:\n\t\t\timage_array = np.array(image)\n\t\t\tfor row in image_array:\n\t\t\t\tfor pixel in row:\n\t\t\t\t\tif (0.2989 * pixel[0]) + (0.5870 * pixel[1]) + (0.1140 * pixel[2]) <= self.black_threshold:\n\t\t\t\t\t\tfactor_aux = self.filters.get(\"shadows\") - 1\n\t\t\t\t\t\tif pixel[0] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[0] = 255\n\t\t\t\t\t\telif pixel[0] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[0] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[0] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[1] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[1] = 255\n\t\t\t\t\t\telif pixel[1] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[1] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[1] += 100 * factor_aux\n\n\t\t\t\t\t\tif pixel[2] + 100 * factor_aux > 255:\n\t\t\t\t\t\t\tpixel[2] = 255\n\t\t\t\t\t\telif pixel[2] + 100 * factor_aux < 0:\n\t\t\t\t\t\t\tpixel[2] = 0\n\t\t\t\t\t\telse:\n\t\t\t\t\t\t\tpixel[2] += 100 * factor_aux\n\t\t\timage = Image.fromarray(image_array)\n\n\t\tif self.filters.get(\"contrast\") is not None:\n\t\t\timage = ImageEnhance.Contrast(image).enhance(self.filters.get(\"contrast\"))\n\n\t\tif self.filters.get(\"brightness\") is not None:\n\t\t\timage = ImageEnhance.Brightness(image).enhance(self.filters.get(\"brightness\"))\n\n\t\tif self.filters.get(\"saturation\") is not None:\n\t\t\timage = ImageEnhance.Color(image).enhance(self.filters.get(\"saturation\"))\n\n\t\tif self.filters.get(\"opacity\") is not None:\n\t\t\tfactor = self.filters.get(\"opacity\")\n\t\t\topacity = factor if factor <= 1 else 1\n\t\t\timage = image.convert(\"RGBA\")\n\t\t\talpha = image.split()[3]\n\t\t\talpha = alpha.point(lambda p: p * opacity)\n\t\t\timage.putalpha(alpha)\n\t\t\n\t\treturn image\n\nclass NamedFilter:\n\tdef __init__(self, filter):\n\t\tself.filter = filter\n\n\tdef apply(self, image):\n\t\timage = image.filter(self.filter)\n\t\treturn image\n\nif not os.path.exists(\"./imgine_output\"):\n\tos.mkdir(\"imgine_output\")\n\n");
 
 	GenerateExpression(program->expression);
 
@@ -246,11 +246,11 @@ void GenerateFordef(Fordef fordef) {
 	LogDebug("GenerateFordef");
 
 	for_count++;
-	fprintf(file, "for %s in ", fordef->forvar->var_name);
+	fprintf(file, "if not os.path.exists(\"./imgine_output/bulk_edit_%u\"):\n\tos.mkdir(\"imgine_output/bulk_edit_%u\")\n", for_count, for_count);
+	fprintf(file, "for _imgine_index, %s in enumerate(", fordef->forvar->var_name);
 	GenerateSetvar(fordef->setvar);
-	fprintf(file, ":\n");
+	fprintf(file, "):\n");
 	GenerateBlock(fordef->block);
-	images_inside_for_count = 0;
 }
 
 void GenerateBlock(Block block) {
@@ -359,21 +359,12 @@ void GenerateFunctions(Functions functions) {
 			fprintf(file, "))");
 			break;
 		case FUNCTIONSTYPE_SAVE:
-			LogDebug("Llego a save");
 			Symbol image = GetFromSymbolTable(functions->var_name);
-			LogDebug("Busco en la tabla");
 			if (image->type == VARTYPE_IMAGE) {
-				LogDebug("Entro al var image");
 				fprintf(file, "%s.save(os.path.join(\".\", \"imgine_output\", os.path.splitext(os.path.basename(\"%s\"))[0] + \".png\"))", functions->var_name, image->path);
-				LogDebug("Imprimo");
 			} else if (image->type == VARTYPE_FOR_IMAGE) {
-				LogDebug("Entro al for image");
-				images_inside_for_count++;
-				LogDebug("Sumo a la variable");
-				fprintf(file, "%s.save(os.path.join(\".\", \"imgine_output\", \"bulk_edit_%u\", \"%u\" + \".png\"))", functions->var_name, for_count, images_inside_for_count);
-				LogDebug("Imprimo");
+				fprintf(file, "%s.save(os.path.join(\".\", \"imgine_output\", \"bulk_edit_%u\", str(_imgine_index) + \".png\"))", functions->var_name, for_count);
 			}
-			LogDebug("Salgo de save");
 			break;
 	}
 	fprintf(file, "\n");
@@ -391,7 +382,7 @@ void GenerateFilters(Filters filters, char * image) {
 		case FILTERSTYPE_MULTIPLE:
 			fprintf(file, "%s = ", image);
 			GenerateFiltervar(filters->filtervar);
-			fprintf(file, ".apply(%s)\n", image);
+			fprintf(file, ".apply(%s); ", image);
 			GenerateFilters(filters->filters, image);
 			break;
 	}
