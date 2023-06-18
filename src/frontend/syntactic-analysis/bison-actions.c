@@ -179,6 +179,9 @@ Imagevar ImagevarVarnameGrammarAction(char * varname) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -198,6 +201,10 @@ Imagedef ImagedefGrammarAction(char * varname, Imagevar imagevar) {
 		switch (imagevar->type) {
 			case IMAGEVARTYPE_VAR_NAME:
 				Symbol variable = GetFromSymbolTable(imagevar->var_name);
+				if (variable->type != VARTYPE_IMAGE) {
+					// TODO Error Handling
+					LogError("ERROR. Tipo inválido");
+				}
 				InsertInSymbolTable(varname, VARTYPE_IMAGE, variable->path);
 				break;
 			case IMAGEVARTYPE_PATH:
@@ -253,6 +260,9 @@ Filtervar FilterVarnameGrammarAction(char * varname) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_FILTER) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -381,6 +391,9 @@ Setvar SetvarVarnameGrammarAction(char * varname) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_SET) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -483,6 +496,9 @@ Functions ApplyFiltersGrammarAction(char * varname, Filters filters) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -500,6 +516,9 @@ Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Position
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -517,6 +536,9 @@ Functions ResizeImageGrammarAction(char * varname, float width, float height) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -534,6 +556,9 @@ Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axi
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -552,6 +577,9 @@ Functions TrimImageGrammarAction(char * varname, float width, float height, Posi
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
@@ -567,6 +595,9 @@ Functions SaveGrammarAction(char * varname) {
 	if (!SymbolTableContains(varname)) {
 		// TODO Error Handling
 		LogError("ERROR. Variable no definida");
+	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
+		// TODO Error Handling
+		LogError("ERROR. Tipo inválido");
 	}
 
 	return new_guy;
