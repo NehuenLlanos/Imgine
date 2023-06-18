@@ -6,24 +6,42 @@
 #include "../../backend/support/garbage-collector.h"
 #include "../../backend/semantic-analysis/symbol-table.h"
 #include "bison-actions.h"
+#include "../../backend/support/shared.h"
 
 /**
  * Implementación de "bison-grammar.h".
  */
 
+void AddError(const char * error, const char * cause, const char * message, int line_number) {
+	char * error_message = Malloc(MAX_ERROR_LENGTH);
+
+	sprintf(
+		error_message,
+		"\033[1;31m%s:\033[0m '\033[1m%s\033[0m' %s \033[0;35m(linea %d)\033[0m.\n", 
+		error, 
+		cause,
+		message,
+		line_number
+	);
+
+	ErrorList error_node = Calloc(1, sizeof(struct ErrorListNode));
+	error_node->message = error_message;
+
+	if (state.errors == NULL) {
+		state.errors = error_node;
+		state.last_error = error_node;
+	} else {
+		state.last_error->next = error_node;
+		state.last_error = error_node;
+	}
+	state.error_count++;
+}
+
 /**
  * Esta función se ejecuta cada vez que se emite un error de sintaxis.
  */
 void yyerror(const char * string) {
-	LogError("Mensaje: '%s' debido a '%s' (linea %d).", string, yytext, yylineno);
-	LogError("En ASCII es:");
-	LogErrorRaw("\t");
-	const int length = strlen(yytext);
-	for (int i = 0; i < length; ++i)
-	{
-		LogErrorRaw("[%d]", yytext[i]);
-	}
-	LogErrorRaw("\n\n");
+	AddError("Error de sintaxis", yytext, "no es un elemento de Imgine válido", yylineno);
 }
 
 Program ProgramGrammarAction(Expression expression) {
@@ -37,7 +55,7 @@ Program ProgramGrammarAction(Expression expression) {
 	 * cuyo campo "succeed" indica si la compilación fue o no exitosa, la cual
 	 * es utilizada en la función "main".
 	 */
-	state.succeed = true;
+	state.succeed = state.error_count == 0;
 	state.program = program;
 
 	return program;
@@ -177,11 +195,9 @@ Imagevar ImagevarVarnameGrammarAction(char * varname) {
 	new_guy->var_name = varname;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -195,15 +211,13 @@ Imagedef ImagedefGrammarAction(char * varname, Imagevar imagevar) {
 	new_guy->imagevar = imagevar;
 
 	if (SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Redefinicion");
+		AddError("Variable redefinida", varname, "ya ha sido previamente definida. Usá otro nombre para la variable", yylineno);
 	} else {
 		switch (imagevar->type) {
 			case IMAGEVARTYPE_VAR_NAME:
 				Symbol variable = GetFromSymbolTable(imagevar->var_name);
 				if (variable->type != VARTYPE_IMAGE) {
-					// TODO Error Handling
-					LogError("ERROR. Tipo inválido");
+					AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 				}
 				InsertInSymbolTable(varname, VARTYPE_IMAGE, variable->path);
 				break;
@@ -233,8 +247,7 @@ Filtervar FiltervarParanthesisGrammarAction(char * filtername) {
 		  strcmp(filtername, "SHARPEN") == 0 || 
 		  strcmp(filtername, "SMOOTH") == 0 ||
 		  strcmp(filtername, "SMOOTH_MORE") == 0)) {
-		// TODO Error Handling
-		LogError("ERROR. Filtro predefinido no existe");
+		AddError("Filtro inexistente", filtername, "no es un filtro predefinido", yylineno);
 	}
 
 	return new_guy;
@@ -258,11 +271,9 @@ Filtervar FilterVarnameGrammarAction(char * varname) {
 	new_guy->var_name = varname;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_FILTER) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es un filtro", yylineno);
 	}
 
 	return new_guy;
@@ -276,7 +287,7 @@ Filterdef FilterdefGrammarAction(char * varname, Filtervar filtervar) {
 	new_guy->filtervar = filtervar;
 
 	if (SymbolTableContains(varname)) {
-		// TODO Error Handling
+		AddError("Variable redefinida", varname, "ya ha sido previamente definida. Usá otro nombre para la variable", yylineno);
 		LogError("ERROR. Redefinicion");
 	} else {
 		InsertInSymbolTable(varname, VARTYPE_FILTER, NULL);
@@ -389,11 +400,9 @@ Setvar SetvarVarnameGrammarAction(char * varname) {
 	new_guy->var_name = varname;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_SET) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es un set", yylineno);
 	}
 
 	return new_guy;
@@ -407,8 +416,7 @@ Setdef SetdefGrammarAction(char * varname, Setvar setvar) {
 	new_guy->setvar = setvar;
 
 	if (SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Redefinicion");
+		AddError("Variable redefinida", varname, "ya ha sido previamente definida. Usá otro nombre para la variable", yylineno);
 	} else {
 		InsertInSymbolTable(varname, VARTYPE_SET, NULL);
 	}
@@ -444,8 +452,7 @@ Forvar ForvarGrammarAction(char * varname) {
 	new_guy->var_name = varname;
 
 	if (SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Redefinicion");
+		AddError("Variable redefinida", varname, "ya ha sido previamente definida. Usá otro nombre para la variable", yylineno);
 	} else {
 		InsertInSymbolTable(varname, VARTYPE_FOR_IMAGE, NULL);
 	}
@@ -494,11 +501,9 @@ Functions ApplyFiltersGrammarAction(char * varname, Filters filters) {
 	new_guy->filters = filters;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -514,11 +519,9 @@ Functions OverlapImagesGrammarAction(char * varname, Imagevar imagevar, Position
 	new_guy->position = position;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -534,11 +537,9 @@ Functions ResizeImageGrammarAction(char * varname, float width, float height) {
 	new_guy->height = height;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -554,11 +555,9 @@ Functions UnionImagesGrammarAction(char * varname, Imagevar imagevar, Axises axi
 	new_guy->axis = axis;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -575,11 +574,9 @@ Functions TrimImageGrammarAction(char * varname, float width, float height, Posi
 	new_guy->position = position;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;
@@ -593,11 +590,9 @@ Functions SaveGrammarAction(char * varname) {
 	new_guy->var_name = varname;
 
 	if (!SymbolTableContains(varname)) {
-		// TODO Error Handling
-		LogError("ERROR. Variable no definida");
+		AddError("Variable indefinida", varname, "no ha sido definida previamente", yylineno);
 	} else if (GetFromSymbolTable(varname)->type != VARTYPE_IMAGE && GetFromSymbolTable(varname)->type != VARTYPE_FOR_IMAGE) {
-		// TODO Error Handling
-		LogError("ERROR. Tipo inválido");
+		AddError("Tipo inválido", varname, "no es una imagen", yylineno);
 	}
 
 	return new_guy;

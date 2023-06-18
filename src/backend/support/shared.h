@@ -38,9 +38,21 @@ typedef enum {
 // El tipo de los tokens emitidos por Flex.
 typedef int token;
 
+#define MAX_ERROR_LENGTH 255
+
+typedef struct ErrorListNode * ErrorList;
+
+struct ErrorListNode {
+	char * message;
+	ErrorList next;
+};
+
 // Estado global de toda la aplicación.
 typedef struct {
 	boolean succeed;
+	ErrorList errors;
+	ErrorList last_error;
+	unsigned int error_count;
 	Program program;
 } CompilerState;
 

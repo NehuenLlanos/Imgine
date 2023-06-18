@@ -12,6 +12,9 @@ CompilerState state;
 const int main(const int argumentCount, const char ** arguments) {
 	// Inicializar estado de la aplicación.
 	state.program = NULL;
+	state.errors = NULL;
+	state.last_error = NULL;
+	state.error_count = 0;
 	state.succeed = false;
 
 	// Mostrar parámetros recibidos por consola.
@@ -31,12 +34,20 @@ const int main(const int argumentCount, const char ** arguments) {
 				Generate(state.program);
 			}
 			else {
-				LogError("Se produjo un error en la aplicacion.");
+				LogError("Se produjo un error de compilación.");
+				while (state.errors != NULL) {
+					printf("%s", state.errors->message);
+					state.errors = state.errors->next;
+				}
 				return -1;
 			}
 			break;
 		case 1:
 			LogError("Bison finalizo debido a un error de sintaxis.");
+			while (state.errors != NULL) {
+				printf("%s", state.errors->message);
+				state.errors = state.errors->next;
+			}
 			break;
 		case 2:
 			LogError("Bison finalizo abruptamente debido a que ya no hay memoria disponible.");
